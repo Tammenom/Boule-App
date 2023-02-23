@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.GameData;
+import com.example.myapplication.DataClasses.PlayRoundData;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -42,6 +43,8 @@ public class BouleFieldView extends View {
     private void init (@Nullable AttributeSet set){
 
     }
+
+    public PlayRoundData gameRoundData = new PlayRoundData();
 
 
 
@@ -125,15 +128,50 @@ public class BouleFieldView extends View {
             postInvalidate();
 
         }else{
+            gameRoundData.thrownBalls = new ArrayList<BallData>();
+
             for(int i = 1; i < ballDatas.size(); i++){
 
                 ballDatas.get(i).distanceToPiggy = CalculateDistanceToPiggy(ballDatas.get(0), ballDatas.get(i));
-                Log.d("App", "Ball " + i + ",Distance to piggy: " +  ballDatas.get(i).distanceToPiggy);
+                gameRoundData.thrownBalls.add(ballDatas.get(i));
+                //Log.d("App", "Ball " + i + ",Distance to piggy: " +  ballDatas.get(i).distanceToPiggy);
+                        }
+            ArrayList<BallData> nList = new ArrayList<BallData>();
+            nList = gameRoundData.thrownBalls;
+            //gameRoundData.thrownBallsSorted = InsertSortBallThrows(nList);
+
+            Log.d("App", "Unsorted List ");
+            for(int i = 0; i < gameRoundData.thrownBalls.size(); i++){
+
+                Log.d("App", "Ball " + i + ", Team: "+ gameRoundData.thrownBalls.get(i).ballTeam +",Distance to piggy: " +  gameRoundData.thrownBalls.get(i).distanceToPiggy);
+                           }
+           // Log.d("App", "Sorted List ");
+            for(int i = 0; i < gameRoundData.thrownBallsSorted.size(); i++){
+
+                Log.d("App", "Ball " + i + ", Team: "+ gameRoundData.thrownBallsSorted.get(i).ballTeam +",Distance to piggy: " +  gameRoundData.thrownBallsSorted.get(i).distanceToPiggy);
             }
 
-        }
-    }
 
+        }
+
+    }
+    public ArrayList<BallData> InsertSortBallThrows (ArrayList<BallData> newUnsortedList){
+
+        ArrayList<BallData> unsortedList = newUnsortedList;
+
+        BallData k;
+        for (int i = 0; i < unsortedList.size(); i++) {
+            for (int j = unsortedList.size()-1; j > 0; j--) {
+                if (unsortedList.get(j-1).distanceToPiggy > unsortedList.get(j).distanceToPiggy) {
+                    k = unsortedList.get(j);
+                    unsortedList.set(j, unsortedList.get(j -1));
+                    unsortedList.set(j -1, k);
+                }
+            }
+        }
+
+        return unsortedList;
+    }
     public void ThrowBalls(){
 
 
@@ -189,112 +227,5 @@ public class BouleFieldView extends View {
 
 
 
-   /* public void AddNewBallTest(){
-        //d
-        if (teamOneTurn)
-            teamOneTurn =false;
-        else
-            teamOneTurn = true;
 
-        ballInfo[2] = 0;
-        ballInfo[3] = 0;
-
-        Random r = new Random();
-        float ballVelX  = 0 + r.nextFloat() * (3 - 0);
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 1 + 1);
-        if(randomNum ==0){
-            ballVelX = -ballVelX;
-        }
-
-        r = new Random();
-        float ballVelY  = 4 + r.nextFloat() * (24 - 4);
-
-        ballInfo[0] = ballVelX;
-        ballInfo[1] = ballVelY;
-        float [] newBallInfo = new float[5];
-        newBallInfo[0] = ballInfo[0];
-        newBallInfo[1] = ballInfo[1];
-        newBallInfo[2] = ballInfo[2];
-        newBallInfo[3] = ballInfo[3];
-        if (teamOneTurn)
-            newBallInfo[4] = 0;
-        else
-            newBallInfo[4] = 1;
-
-        if (gRound == 0)
-            newBallInfo[4] = 3;
-
-        gRound ++;
-        ballInfos.add(newBallInfo);
-        postInvalidate();
-
-
-
-    public void calculateBallThrowTest(){
-        boolean drawNew = false;
-
-        for(int i = 0; i < ballInfos.size(); i++){
-
-            float [] ballData = ballInfos.get(i);
-
-            if (ballData[0] > 0.1 || ballData[1] > 0.1){
-
-                drawNew = true;
-
-                ballData[0] = ballData[0] * 0.98f;
-                ballData[1] = ballData[1] * 0.98f;
-
-                ballData[2] = ballData[2] + ballData[0];
-                ballData[3] = ballData[3] - ballData[1];
-            }
-        }
-
-        if (drawNew){
-            postInvalidate();
-
-        }
-    }
-
-    public void ThrowBalls(){
-
-
-    }
-
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        float startPosX = canvas.getWidth() /2;
-        float startPosY = canvas.getHeight();
-                canvas.drawColor(getResources().getColor(R.color.lightBeige));
-        //canvas.drawColor(Color.argb(1,234, 210, 168));
-        Paint paint = new Paint();
-
-        for (int i =0; i < ballInfos.size(); i++){
-            int ballSize = 25;
-
-            float [] ballData = ballInfos.get(i);
-            float ballColor = ballData[4];
-
-            if (ballColor == 3){
-                paint.setColor(Color.GREEN);
-                ballSize = 20;
-            }else if (ballColor == 0){
-                paint.setColor(Color.RED);
-                ballSize = 25;
-            }else if (ballColor == 1){
-                paint.setColor(Color.BLUE);
-                ballSize = 25;
-            }
-
-            float ballPosX = ballData[2] + startPosX;
-            float ballPosY = ballData[3] + startPosY;
-
-            canvas.drawCircle(ballPosX,ballPosY,ballSize,paint);
-
-        }
-
-        calculateBallThrowTest();
-    }
-
-    */
 }

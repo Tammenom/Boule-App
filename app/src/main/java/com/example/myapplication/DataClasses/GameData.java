@@ -3,9 +3,9 @@ package com.example.myapplication.DataClasses;
 import java.util.ArrayList;
 
 public class GameData {
-    private static final GameData OBJ =new GameData();
+    private static GameData OBJ =new GameData();
     private GameData() {
-        System.out.println("Objekt gebildet...");
+        System.out.println("Objekt gebildet GameData");
     }
 
     public static GameData getInstance() {

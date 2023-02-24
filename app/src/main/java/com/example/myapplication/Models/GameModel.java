@@ -4,13 +4,28 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.myapplication.Controller.GameController;
+import com.example.myapplication.DataClasses.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameModel {
-    private GameController gameController;
+
+    private static GameModel OBJ;
+    private  GameModel() {
+        System.out.println("Objekt gebildet GameModel");
+    }
+
+    public static GameModel getInstance() {
+        if (OBJ == null){
+            OBJ = new GameModel();
+        }
+
+        return OBJ;
+    }
+
+    private GameController gameController = GameController.getInstance();
 
     //Numer of Players in current Game
     private int numPlayers = 0;
@@ -30,13 +45,12 @@ public class GameModel {
     List<Integer> team1RoundPoints;
     List<Integer> team2RoundPoints;
 
-    public GameModel(GameController nGameController){
-        gameController = nGameController;
-    }
+
     //Initializes the game withe the selected amount of Players
     public void InitializeGame(String newGameMode){
         ResetGameSettings();
         SetGameSettingsToGameMode(newGameMode);
+        Log.d("App", "InitializeGame in GameModel");
 
 
     }

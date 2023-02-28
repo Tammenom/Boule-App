@@ -55,7 +55,9 @@ public class BouleFieldView extends View {
 
 
     public void ThrowButtonClicked(){
-        AddNewBallTest();
+
+
+
     }
 
     public boolean teamOneTurn = true;

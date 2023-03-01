@@ -65,23 +65,7 @@ public class BouleFieldView extends View {
 
     public boolean teamOneTurn = true;
 
-    //Returns a Random X-Velocity, used for testing.
-    public float AddRandomXVelocity(){
-        Random r = new Random();
-        float ballVelX  = 0 + r.nextFloat() * (3 - 0);
-        int randomNum = ThreadLocalRandom.current().nextInt(0, 1 + 1);
-        if(randomNum ==0){
-            ballVelX = -ballVelX;
-        }
-        return  ballVelX;
-    }
 
-    //Returns a Random Y-Velocity, used for testing.
-    public  float AddRandomYVelocity(){
-        Random r = new Random();
-        float ballVelY  = 4 + r.nextFloat() * (24 - 4);
-        return ballVelY;
-    }
     public void AddNewBall(float nVelX, float nVelY, float nVelZ, float nTime){
         //d
         String newTeamInfo = "neutral";
@@ -134,31 +118,6 @@ public class BouleFieldView extends View {
         return velocity;
     }
 
-
-    public void AddNewBallTest(){
-        //d
-        String newTeamInfo = "neutral";
-
-        if (teamOneTurn)
-            teamOneTurn =false;
-        else
-            teamOneTurn = true;
-
-        if (teamOneTurn)
-            newTeamInfo = "team 1";
-        else
-            newTeamInfo = "team 2";
-
-        if (gRound == 0)
-            newTeamInfo = "neutral";
-
-        BallData newBall = new BallData(AddRandomXVelocity(), AddRandomYVelocity(), newTeamInfo);
-        gRound ++;
-        //Log.d("App", "BallInfo, Ball Velocity X:" + newBall.ballVelX);
-        ballDatas.add(newBall);
-        postInvalidate();
-
-    }
     public void calculateBallThrowTest(){
         boolean drawNew = false;
 

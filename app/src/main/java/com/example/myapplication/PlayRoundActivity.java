@@ -124,10 +124,10 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
                 Log.d("Sensor-App", "Counter: x:" +  xv + " y:" +  yv + " z:" +  zv);
 
                 if(!checkForXpos){
-                    if(throwVectors.get(i)[0] >= 3){
+                    if(throwVectors.get(i)[0] >= 1.5){
                         xPositiv = true;
                         checkForXpos = true;
-                    }else if(throwVectors.get(i)[0] <= -3) {
+                    }else if(throwVectors.get(i)[0] <= -1.5) {
 
                         xPositiv = false;
                         checkForXpos = true;
@@ -164,13 +164,14 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
 
             }
 
-            float throwTime =  Math.round((secondTimeStamp - firstTimeStamp) / 10000000.0);
+            float throwTime =  Math.round((secondTimeStamp - firstTimeStamp) / 100000000.0);
 
             String sX = String.format("%.2f", xv);
             String sY = String.format("%.2f", yv);
             String sZ = String.format("%.2f", zv);
 
             Log.d("Sensor-App", "Combined Vector is: " + "x:" +  sX + " y:" +  sY + " z:" +  sZ + ". Time in Millisec: " + throwTime);
+            bouleView.ThrowButtonClicked(xv,yv, zv, throwTime);
 
             timeStamoCheck = false;
             startListening = false;

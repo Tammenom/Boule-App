@@ -54,7 +54,10 @@ public class BouleFieldView extends View {
     public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
 
 
-    public void ThrowButtonClicked(){
+    public void ThrowButtonClicked( float nVelX, float nVelY, float nVelZ, float nTime){
+
+
+            AddNewBall( nVelX,  nVelY,  nVelZ,  nTime);
 
 
 
@@ -79,6 +82,58 @@ public class BouleFieldView extends View {
         float ballVelY  = 4 + r.nextFloat() * (24 - 4);
         return ballVelY;
     }
+    public void AddNewBall(float nVelX, float nVelY, float nVelZ, float nTime){
+        //d
+        String newTeamInfo = "neutral";
+
+        if (teamOneTurn)
+            teamOneTurn =false;
+        else
+            teamOneTurn = true;
+
+        if (teamOneTurn)
+            newTeamInfo = "team 1";
+        else
+            newTeamInfo = "team 2";
+
+        if (gRound == 0)
+            newTeamInfo = "neutral";
+
+        BallData newBall = new BallData(CalculateVelocity(nVelX,nTime, 0), CalculateVelocity(nVelY,nTime, 1), newTeamInfo);
+        gRound ++;
+        //Log.d("App", "BallInfo, Ball Velocity X:" + newBall.ballVelX);
+        ballDatas.add(newBall);
+        postInvalidate();
+
+    }
+
+    public float CalculateVelocity(float nforce, float ntime, int ntype){
+
+        //is X if type = 0, Y if type is 1, z if type is 2;
+        int type=ntype;
+        float velocity = 0;
+
+        switch(ntype){
+            case 0:
+                velocity = nforce/ntime;
+                Log.d("App", "Velocity X: " + velocity);
+                break;
+            case 1:
+                velocity = (nforce/ntime)*3;
+                Log.d("App", "Velocity Y: " + velocity);
+                break;
+            case 2:
+                velocity = nforce/ntime;
+                Log.d("App", "Velocity Z: " + velocity);
+                break;
+            default:
+                velocity = 0;
+                break;
+        }
+
+        return velocity;
+    }
+
 
     public void AddNewBallTest(){
         //d
@@ -140,14 +195,14 @@ public class BouleFieldView extends View {
                         }
             ArrayList<BallData> nList = new ArrayList<BallData>();
             nList = gameRoundData.thrownBalls;
-            //gameRoundData.thrownBallsSorted = InsertSortBallThrows(nList);
+            gameRoundData.thrownBallsSorted = InsertSortBallThrows(nList);
 
             Log.d("App", "Unsorted List ");
             for(int i = 0; i < gameRoundData.thrownBalls.size(); i++){
 
                 Log.d("App", "Ball " + i + ", Team: "+ gameRoundData.thrownBalls.get(i).ballTeam +",Distance to piggy: " +  gameRoundData.thrownBalls.get(i).distanceToPiggy);
                            }
-           // Log.d("App", "Sorted List ");
+           Log.d("App", "Sorted List ");
             for(int i = 0; i < gameRoundData.thrownBallsSorted.size(); i++){
 
                 Log.d("App", "Ball " + i + ", Team: "+ gameRoundData.thrownBallsSorted.get(i).ballTeam +",Distance to piggy: " +  gameRoundData.thrownBallsSorted.get(i).distanceToPiggy);

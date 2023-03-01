@@ -13,7 +13,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
+import com.example.myapplication.DataClasses.ThrowData;
 
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
     private  SensorManager mSensorManager;
     public   Sensor mAccelerometer;
     public ArrayList<float []> throwVectors = new ArrayList<float []>();
+    public GameController gameController;
 
 
     BouleFieldView bouleView;
@@ -31,6 +34,8 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
          bouleView = (BouleFieldView) findViewById(R.id.bouleFieldView);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        gameController = GameController.getInstance();
+        gameController.SetPlayRoundActivity(this);
     }
 
     protected void onResume() {
@@ -59,14 +64,8 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
 
             endListening = true;
         }
-
-
-
     }
-    /*float x = 0;
-    float y = 0;
-    float z = 0;
-    int count = 0;*/
+
     float xprev=0;
     float yprev=0;
     float zprev=0;
@@ -119,59 +118,10 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
             float zv = 0;
             checkForXpos = false;
 
+            ThrowData throwData = new ThrowData(firstTimeStamp, secondTimeStamp, throwVectors);
 
-            for( int i = 0; i < throwVectors.size(); i++){
-                Log.d("Sensor-App", "Counter: x:" +  xv + " y:" +  yv + " z:" +  zv);
-
-                if(!checkForXpos){
-                    if(throwVectors.get(i)[0] >= 1.5){
-                        xPositiv = true;
-                        checkForXpos = true;
-                    }else if(throwVectors.get(i)[0] <= -1.5) {
-
-                        xPositiv = false;
-                        checkForXpos = true;
-                    }
-                }
-
-                if(xPositiv && checkForXpos) {
-                    if(throwVectors.get(i)[0] > 0)
-                        xv = (xv + throwVectors.get(i)[0]);
-                }
-                if(!xPositiv && checkForXpos) {
-                    if(throwVectors.get(i)[0] < 0)
-                        xv = (xv + throwVectors.get(i)[0]);
-                }
-
-
-                if(throwVectors.get(i)[1] > 0)
-                    yv = (yv + throwVectors.get(i)[1]);
-
-                if(throwVectors.get(i)[2] > 0)
-                    zv = (zv + throwVectors.get(i)[2]);
-
-
-
-                //xv = (xv + throwVectors.get(i)[0]);
-                //yv = (yv + throwVectors.get(i)[1]);
-
-
-                String sX = String.format("%.2f", xv + throwVectors.get(i)[0]);
-                String sY = String.format("%.2f", xv + throwVectors.get(i)[1]);
-                String sZ = String.format("%.2f", xv + throwVectors.get(i)[2]);
-
-                Log.d("Sensor-App", "x:" +  sX + " y:" +  sY + " z:" +  sZ);
-
-            }
-
-            float throwTime =  Math.round((secondTimeStamp - firstTimeStamp) / 100000000.0);
-
-            String sX = String.format("%.2f", xv);
-            String sY = String.format("%.2f", yv);
-            String sZ = String.format("%.2f", zv);
-
-            Log.d("Sensor-App", "Combined Vector is: " + "x:" +  sX + " y:" +  sY + " z:" +  sZ + ". Time in Millisec: " + throwTime);
-            bouleView.ThrowButtonClicked(xv,yv, zv, throwTime);
+            gameController.ThrowButtonClicked(throwData);
+            //bouleView.ThrowButtonClicked(xv,yv, zv, throwTime);
 
             timeStamoCheck = false;
             startListening = false;
@@ -187,5 +137,9 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public void UpdateBouleFieldView(ArrayList<BallData> nBallDatas){
+        bouleView.UpdateBouleFieldView(nBallDatas);
     }
 }

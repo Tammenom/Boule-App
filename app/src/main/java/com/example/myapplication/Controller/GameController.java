@@ -2,8 +2,13 @@ package com.example.myapplication.Controller;
 
 import android.util.Log;
 
+import com.example.myapplication.DataClasses.BallData;
+import com.example.myapplication.DataClasses.ThrowData;
 import com.example.myapplication.GameOverviewActivity;
 import com.example.myapplication.Models.GameModel;
+import com.example.myapplication.PlayRoundActivity;
+
+import java.util.ArrayList;
 
 public class GameController {
     private static GameController OBJ;
@@ -19,11 +24,16 @@ public class GameController {
     }
 
     private GameOverviewActivity gameOverviewActivity;
+    private PlayRoundActivity playRoundActivity;
 
     private GameModel model;
 
     public void SetGameOverviewActivity(GameOverviewActivity nGameOverviewActivity){
        gameOverviewActivity = nGameOverviewActivity;
+    }
+
+    public void SetPlayRoundActivity(PlayRoundActivity nPlayRoundActivity){
+        playRoundActivity = nPlayRoundActivity;
     }
 
     public void InitializeNewGame(String gameMode){
@@ -39,6 +49,14 @@ public class GameController {
     public void SetGameOverviewTeamListPoints(String teamName, String listContent){gameOverviewActivity.SetGameOverviewTeamListPoints(teamName,listContent);}
 
     public void NextRound(){model.NextGameRound();}
+
+    public void ThrowButtonClicked(ThrowData nThrowData){
+        model.NewThrow(nThrowData);
+    }
+
+    public void UpdateBouleFieldView(ArrayList<BallData> nBallDatas){
+        playRoundActivity.UpdateBouleFieldView(nBallDatas);
+    }
 
 
 

@@ -1,5 +1,7 @@
 package com.example.myapplication.DataClasses;
 
+import com.example.myapplication.Models.GameModel;
+
 import java.util.ArrayList;
 
 public class GameData {
@@ -9,6 +11,10 @@ public class GameData {
     }
 
     public static GameData getInstance() {
+        if (OBJ == null){
+            OBJ = new GameData();
+        }
+
         return OBJ;
     }
 

@@ -73,7 +73,7 @@ public class GameOverviewActivity extends AppCompatActivity {
 
     public void NextRoundButtonClicked(View v){
 
-        gameController.NextRound();
+
         launchPlayRound(v);
 
     }

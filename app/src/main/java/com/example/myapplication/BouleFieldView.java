@@ -46,8 +46,8 @@ public class BouleFieldView extends View {
 
     public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
 
-    public void UpdateBouleFieldView(ArrayList<BallData> nBallDatas){
-        ballDatas = nBallDatas;
+    public void UpdateBouleFieldView(BallData nBallData){
+        ballDatas.add(nBallData);
         postInvalidate();
     }
 

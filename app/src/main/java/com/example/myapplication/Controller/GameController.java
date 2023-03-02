@@ -54,7 +54,7 @@ public class GameController {
         model.NewThrow(nThrowData);
     }
 
-    public void UpdateBouleFieldView(ArrayList<BallData> nBallDatas){
+    public void UpdateBouleFieldView(BallData nBallDatas){
         playRoundActivity.UpdateBouleFieldView(nBallDatas);
     }
 

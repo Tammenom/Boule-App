@@ -45,11 +45,13 @@ public class GameModel {
     private int fieldSizeX;
     private int fieldSizeY;
 
+    private int maxBoulesPerTeam = 3;
+
     List<Integer> roundsList;
     List<Integer> team1RoundPoints;
     List<Integer> team2RoundPoints;
 
-    public ArrayList<PlayRoundData> gameRounds = new ArrayList<PlayRoundData>();
+    public ArrayList<PlayRoundData> finishedGameRounds = new ArrayList<PlayRoundData>();
     public ArrayList<String> teamOnePlayers = new ArrayList<String>();
     public ArrayList<String> teamTwoPlayers = new ArrayList<String>();
 
@@ -140,11 +142,55 @@ public class GameModel {
     }
 
     public void NextGameRound(){
+        gameRoundData = new PlayRoundData();
 
-        EndGameRound(RandomIntReturn(),RandomIntReturn());
+        switch(numPlayers){
+
+            case 1:
+                gameRoundData.boulesTeamOne = 3;
+                gameRoundData.boulesTeamTwo = 3;
+                gameRoundData.maxPlayers = 2;
+                break;
+            case 3:
+                gameRoundData.maxPlayers = 4;
+            case 5:
+                gameRoundData.maxPlayers = 6;
+                gameRoundData.boulesTeamOne = 6;
+                gameRoundData.boulesTeamTwo = 6;
+                break;
+            default:
+                Log.e("GameInfo","Set Boules per Team Error");
+                break;
+    }
+    gameRoundData.playerTeams.add("neutral");
+        for(int i =0; i < teamOnePlayers.size(); i++){
+            gameRoundData.playerTeams.add("team 1");
+
+            if (teamOnePlayers.get(i) != null){
+                gameRoundData.playerTeams.add("team 2");
+            }
+        }
+
+        UpdatePlayerTurnView();
+
+
+    }
+    public void UpdatePlayroundTeamPointsView(){
+
+
+    }
+
+    public void UpdateTeamBoulesLeftView(){
+
+    }
+
+    public void UpdatePlayerTurnView(){
+
     }
 
     public void EndGameRound(int nTeam1points, int nTeam2points){
+
+
         UpdateGameSettings(nTeam1points,nTeam2points);
         SetGameOverviewRounds();
         SetGameOverviewPlayerPoints();
@@ -155,7 +201,7 @@ public class GameModel {
     public void SetGameOverviewRounds(){
         String roundsTotal = Integer.toString(roundCount);
         String roundsListView = "";
-        for(int i = 0; i < roundsList.size(); i++){
+        for(int i = 0; i < finishedGameRounds.size(); i++){
             roundsListView += Integer.toString(roundsList.get(i))+"\n";
         }
 
@@ -208,10 +254,57 @@ public class GameModel {
         return randomNum;
     }
 
-    public void NewThrow(ThrowData nThrowData ){
-        CalculateVelocity( nThrowData);
+    public void UpdateCurentPlayer(){
+
+        if (gameRoundData.currentPlayer < gameRoundData.playerTeams.size() -1){
+            gameRoundData.currentPlayer ++;
+        }else{
+            gameRoundData.currentPlayer = 1;
+        }
+    }
+
+    public void CalculateBoulsLeft(){
+
+            switch(CheckForCurrentTeam()){
+                case "neutral":
+
+                    break;
+                case "team 1":
+                    gameRoundData.boulesTeamOne --;
+                    Log.d("Sensor-App", "Boules left Team 1: " + gameRoundData.boulesTeamOne);
+                    break;
+                case "team 2":
+                    gameRoundData.boulesTeamTwo --;
+                    Log.d("Sensor-App", "Boules left Team 2: " + gameRoundData.boulesTeamTwo);
+                    break;
+                default:
+
+                    break;
+            }
 
     }
+
+    public void CheckIfPlayroundHasEnded(){
+        if(gameRoundData.boulesTeamOne <=0 && gameRoundData.boulesTeamTwo <=0 ){
+            Log.d("Sensor-App", "Play Round has ended!");
+        }
+
+    }
+
+    public void UpdatePlayroundPoints(){
+
+    }
+
+    public void NewThrow(ThrowData nThrowData ){
+        Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
+        CalculateVelocity( nThrowData);
+        UpdatePlayroundPoints();
+        CalculateBoulsLeft();
+        CheckIfPlayroundHasEnded();
+        UpdateCurentPlayer();
+    }
+
+
 
     public void CalculateVelocity(ThrowData nThrowData){
 
@@ -228,7 +321,7 @@ public class GameModel {
 
 
         for( int i = 0; i < throwVectors.size(); i++){
-            Log.d("Sensor-App", "Counter: x:" +  xv + " y:" +  yv + " z:" +  zv);
+            //Log.d("Sensor-App", "Counter: x:" +  xv + " y:" +  yv + " z:" +  zv);
 
             if(!checkForXpos){
                 if(throwVectors.get(i)[0] >= 1.5){
@@ -256,19 +349,6 @@ public class GameModel {
 
             if(throwVectors.get(i)[2] > 0)
                 zv = (zv + throwVectors.get(i)[2]);
-
-
-
-            //xv = (xv + throwVectors.get(i)[0]);
-            //yv = (yv + throwVectors.get(i)[1]);
-
-
-            String sX = String.format("%.2f", xv + throwVectors.get(i)[0]);
-            String sY = String.format("%.2f", xv + throwVectors.get(i)[1]);
-            String sZ = String.format("%.2f", xv + throwVectors.get(i)[2]);
-
-            Log.d("Sensor-App", "x:" +  sX + " y:" +  sY + " z:" +  sZ);
-
         }
 
         float throwTime =  Math.round((secondTimeStamp - firstTimeStamp) / 100000000.0);
@@ -283,36 +363,20 @@ public class GameModel {
     }
 
     //Boule Field View
-
-    public void ThrowButtonClicked( float nVelX, float nVelY, float nVelZ, float nTime){
-        AddNewBall( nVelX,  nVelY,  nVelZ,  nTime);
+    public String CheckForCurrentTeam(){
+        return gameRoundData.playerTeams.get(gameRoundData.currentPlayer);
     }
 
-
-
     public void AddNewBall(float nVelX, float nVelY, float nVelZ, float nTime){
-        //d
-        String newTeamInfo = "neutral";
-
-        if (teamOneTurn)
-            teamOneTurn =false;
-        else
-            teamOneTurn = true;
-
-        if (teamOneTurn)
-            newTeamInfo = "team 1";
-        else
-            newTeamInfo = "team 2";
-
-        if (gRound == 0)
-            newTeamInfo = "neutral";
+            String newTeamInfo = CheckForCurrentTeam();
 
         BallData newBall = new BallData(CalculateVelocity(nVelX,nTime, 0), CalculateVelocity(nVelY,nTime, 1), newTeamInfo);
+        BallData newBall2 = new BallData(CalculateVelocity(nVelX,nTime, 0), CalculateVelocity(nVelY,nTime, 1), newTeamInfo);
         gRound ++;
         //Log.d("App", "BallInfo, Ball Velocity X:" + newBall.ballVelX);
-        ballDatas.add(newBall);
-        gameController.UpdateBouleFieldView(ballDatas);
-        //postInvalidate();
+        gameRoundData.thrownBalls.add(newBall);
+        gameController.UpdateBouleFieldView(newBall2);
+        calculateBallThrowTest();
 
     }
 
@@ -348,9 +412,9 @@ public class GameModel {
     public void calculateBallThrowTest(){
         boolean drawNew = false;
 
-        for(int i = 0; i < ballDatas.size(); i++){
+        for(int i = 0; i < gameRoundData.thrownBalls.size(); i++){
 
-            BallData ballData = ballDatas.get(i);
+            BallData ballData = gameRoundData.thrownBalls.get(i);
 
             if (ballData.ballVelX > 0.1 || ballData.ballVelY > 0.1){
 
@@ -368,20 +432,18 @@ public class GameModel {
         }
 
         if (drawNew){
-           // postInvalidate();
+            calculateBallThrowTest();
 
         }else{
-            gameRoundData.thrownBalls = new ArrayList<BallData>();
+            ArrayList<BallData> thrownBalls = new ArrayList<BallData>();
 
-            for(int i = 1; i < ballDatas.size(); i++){
+            for(int i = 1; i < gameRoundData.thrownBalls.size(); i++){
 
-                ballDatas.get(i).distanceToPiggy = CalculateDistanceToPiggy(ballDatas.get(0), ballDatas.get(i));
-                gameRoundData.thrownBalls.add(ballDatas.get(i));
+                gameRoundData.thrownBalls.get(i).distanceToPiggy = CalculateDistanceToPiggy(gameRoundData.thrownBalls.get(0), gameRoundData.thrownBalls.get(i));
+                thrownBalls.add(gameRoundData.thrownBalls.get(i));
                 //Log.d("App", "Ball " + i + ",Distance to piggy: " +  ballDatas.get(i).distanceToPiggy);
             }
-            ArrayList<BallData> nList = new ArrayList<BallData>();
-            nList = gameRoundData.thrownBalls;
-            gameRoundData.thrownBallsSorted = InsertSortBallThrows(nList);
+            gameRoundData.thrownBallsSorted = InsertSortBallThrows(thrownBalls);
 
             Log.d("App", "Unsorted List ");
             for(int i = 0; i < gameRoundData.thrownBalls.size(); i++){

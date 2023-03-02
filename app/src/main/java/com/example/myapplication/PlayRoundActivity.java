@@ -36,6 +36,7 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         gameController = GameController.getInstance();
         gameController.SetPlayRoundActivity(this);
+        gameController.NextRound();
     }
 
     protected void onResume() {
@@ -139,7 +140,7 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
 
     }
 
-    public void UpdateBouleFieldView(ArrayList<BallData> nBallDatas){
+    public void UpdateBouleFieldView(BallData nBallDatas){
         bouleView.UpdateBouleFieldView(nBallDatas);
     }
 }

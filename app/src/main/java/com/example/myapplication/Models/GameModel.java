@@ -172,19 +172,42 @@ public class GameModel {
         }
 
         UpdatePlayerTurnView();
-
-
     }
+
+
+
+    public void NewThrow(ThrowData nThrowData ){
+        Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
+        CalculateVelocity( nThrowData);
+        UpdatePlayroundPoints();
+        CalculateBoulsLeft();
+        CheckIfPlayroundHasEnded();
+        UpdateCurentPlayer();
+        UpdateTeamBoulesLeftView();
+        UpdatePlayroundTeamPointsView();
+        UpdatePlayerTurnView();
+    }
+
     public void UpdatePlayroundTeamPointsView(){
-
-
+        gameController.SetPlayroundTeamPointsView("Team 1", gameRoundData.pointsTeamOne +" Points");
+        gameController.SetPlayroundTeamPointsView("Team 2", gameRoundData.pointsTeamTwo +" Points");
     }
 
     public void UpdateTeamBoulesLeftView(){
-
+        gameController.SetTeamBoulesLeftView("Team 1", gameRoundData.boulesTeamOne +" left.");
+        gameController.SetTeamBoulesLeftView("Team 2", gameRoundData.boulesTeamTwo +" left.");
     }
 
     public void UpdatePlayerTurnView(){
+        if(!gameRoundData.gameHasEnded){
+            if (gameRoundData.currentPlayer == 0){
+                gameController.SetPlayerTurnView("Throw the Jack!");
+            }else{
+                gameController.SetPlayerTurnView("PLAYER " + gameRoundData.currentPlayer + " TURN.");
+            }
+        }else{
+            gameController.SetPlayerTurnView("GAME ROUND END");
+        }
 
     }
 
@@ -287,22 +310,46 @@ public class GameModel {
     public void CheckIfPlayroundHasEnded(){
         if(gameRoundData.boulesTeamOne <=0 && gameRoundData.boulesTeamTwo <=0 ){
             Log.d("Sensor-App", "Play Round has ended!");
+            gameRoundData.gameHasEnded = true;
         }
 
     }
 
     public void UpdatePlayroundPoints(){
+        if (gameRoundData.thrownBallsSorted != null && gameRoundData.thrownBallsSorted.size() >= 1){
+            String firstBouleTeam = gameRoundData.thrownBallsSorted.get(0).ballTeam;
+            int totalPoints = 0;
+            for (int i =0; i< gameRoundData.thrownBallsSorted.size(); i++){
+                if ((gameRoundData.thrownBallsSorted.get(i).ballTeam == firstBouleTeam) && totalPoints <4){
+                    totalPoints++;
+                }else{
+                    i = gameRoundData.thrownBallsSorted.size();
+                }
+            }
+            switch(firstBouleTeam){
+                case "neutral":
 
+                    break;
+                case "team 1":
+                    gameRoundData.pointsTeamOne = totalPoints;
+                    gameRoundData.pointsTeamTwo = 0;
+                    Log.d("Sensor-App", "Points Team 1: " + gameRoundData.pointsTeamOne);
+                    Log.d("Sensor-App", "Points Team 2: " + gameRoundData.pointsTeamTwo);
+                    break;
+                case "team 2":
+                    gameRoundData.pointsTeamTwo = totalPoints;
+                    gameRoundData.pointsTeamOne = 0;
+                    Log.d("Sensor-App", "Points Team 1: " + gameRoundData.pointsTeamOne);
+                    Log.d("Sensor-App", "Points Team 2: " + gameRoundData.pointsTeamTwo);
+                    break;
+                default:
+
+                    break;
+            }
+        }
     }
 
-    public void NewThrow(ThrowData nThrowData ){
-        Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
-        CalculateVelocity( nThrowData);
-        UpdatePlayroundPoints();
-        CalculateBoulsLeft();
-        CheckIfPlayroundHasEnded();
-        UpdateCurentPlayer();
-    }
+
 
 
 

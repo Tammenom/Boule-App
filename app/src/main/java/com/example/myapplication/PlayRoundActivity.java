@@ -12,6 +12,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
@@ -142,5 +143,29 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
 
     public void UpdateBouleFieldView(BallData nBallDatas){
         bouleView.UpdateBouleFieldView(nBallDatas);
+    }
+
+
+    public void  SetPlayroundTeamPointsView(String teamName, String listContent){
+        if(teamName == "Team 1"){
+            ((TextView)findViewById(R.id.Team1Points)).setText(listContent);
+        }
+        if(teamName == "Team 2"){
+            ((TextView)findViewById(R.id.Team2Points)).setText(listContent);
+        }
+    }
+
+    public void  SetTeamBoulesLeftView(String teamName, String listContent){
+        if(teamName == "Team 1"){
+            ((TextView)findViewById(R.id.Team1BoulesLeft)).setText(listContent);
+        }
+        if(teamName == "Team 2"){
+            ((TextView)findViewById(R.id.Team2BoulesLeft)).setText(listContent);
+        }
+    }
+
+    public void SetPlayerTurnView(String textPlayerTurn){
+        ((TextView)findViewById(R.id.TurnView)).setText(textPlayerTurn);
+
     }
 }

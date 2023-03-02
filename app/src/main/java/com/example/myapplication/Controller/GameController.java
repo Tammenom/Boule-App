@@ -1,12 +1,14 @@
 package com.example.myapplication.Controller;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
 import com.example.myapplication.GameOverviewActivity;
 import com.example.myapplication.Models.GameModel;
 import com.example.myapplication.PlayRoundActivity;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 
@@ -57,7 +59,17 @@ public class GameController {
     public void UpdateBouleFieldView(BallData nBallDatas){
         playRoundActivity.UpdateBouleFieldView(nBallDatas);
     }
+    public void  SetPlayroundTeamPointsView(String teamName, String listContent){
+        playRoundActivity.SetPlayroundTeamPointsView(teamName, listContent);
+    }
 
+    public void  SetTeamBoulesLeftView(String teamName, String listContent){
+        playRoundActivity.SetTeamBoulesLeftView(teamName,listContent);
+    }
+
+    public void SetPlayerTurnView(String textPlayerTurn){
+        playRoundActivity.SetPlayerTurnView(textPlayerTurn);
+    }
 
 
 

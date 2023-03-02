@@ -7,6 +7,7 @@ public class PlayRoundData {
     public ArrayList<BallData> thrownBalls = new ArrayList<BallData>();
     public ArrayList<BallData> thrownBallsSorted = new ArrayList<BallData>();
     public ArrayList<String> playerTeams = new ArrayList<String>();
+    public boolean gameHasEnded = false;
 
     public int pointsTeamOne = 0;
     public int pointsTeamTwo = 0;

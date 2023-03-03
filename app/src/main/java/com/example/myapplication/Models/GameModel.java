@@ -67,6 +67,7 @@ public class GameModel {
         ResetGameSettings();
         SetGameSettingsToGameMode(newGameMode);
         Log.d("App", "InitializeGame in GameModel");
+        UpdateCurrentGame();
 
 
 
@@ -174,18 +175,29 @@ public class GameModel {
         UpdatePlayerTurnView();
     }
 
+    public void endGameRound(){
+        if (gameRoundData.gameHasEnded)
+            finishedGameRounds.add(gameRoundData);
+
+        gameController.finishGameRoundActivity();
+        UpdateCurrentGame();
+    }
+
 
 
     public void NewThrow(ThrowData nThrowData ){
         Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
-        CalculateVelocity( nThrowData);
-        UpdatePlayroundPoints();
-        CalculateBoulsLeft();
-        CheckIfPlayroundHasEnded();
-        UpdateCurentPlayer();
-        UpdateTeamBoulesLeftView();
-        UpdatePlayroundTeamPointsView();
-        UpdatePlayerTurnView();
+        if(!gameRoundData.gameHasEnded){
+            CalculateVelocity( nThrowData);
+            UpdatePlayroundPoints();
+            CalculateBoulsLeft();
+            CheckIfPlayroundHasEnded();
+            UpdateCurentPlayer();
+            UpdateTeamBoulesLeftView();
+            UpdatePlayroundTeamPointsView();
+            UpdatePlayerTurnView();
+        }
+
     }
 
     public void UpdatePlayroundTeamPointsView(){
@@ -211,10 +223,10 @@ public class GameModel {
 
     }
 
-    public void EndGameRound(int nTeam1points, int nTeam2points){
+    public void UpdateCurrentGame(){
 
 
-        UpdateGameSettings(nTeam1points,nTeam2points);
+        UpdateGameSettings();
         SetGameOverviewRounds();
         SetGameOverviewPlayerPoints();
 
@@ -254,13 +266,20 @@ public class GameModel {
 
     }
 
-    public  void UpdateGameSettings(int nTeam1points, int nTeam2points){
-        roundCount ++;
-        roundsList.add(roundCount);
-        team1RoundPoints.add(nTeam1points);
-        team2RoundPoints.add(nTeam2points);
-        team1Points += nTeam1points;
-        team2Points += nTeam2points;
+    public  void UpdateGameSettings(){
+        roundCount =0;
+        team1Points =0;
+        team2Points =0;
+        team1RoundPoints.clear();
+        team2RoundPoints.clear();
+        for (int i =0; i< finishedGameRounds.size(); i++){
+            roundsList.add(i +1);
+            team1RoundPoints.add(finishedGameRounds.get(i).pointsTeamOne);
+            team2RoundPoints.add(finishedGameRounds.get(i).pointsTeamTwo);
+            team1Points += finishedGameRounds.get(i).pointsTeamOne;
+            team2Points += finishedGameRounds.get(i).pointsTeamTwo;
+        }
+        roundCount = (finishedGameRounds.size());
     }
 
 

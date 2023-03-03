@@ -71,6 +71,13 @@ public class GameController {
         playRoundActivity.SetPlayerTurnView(textPlayerTurn);
     }
 
+    public void endGameRound(){
+        model.endGameRound();
+    }
+    public void finishGameRoundActivity(){
+        playRoundActivity.finishActivity();
+    }
+
 
 
 

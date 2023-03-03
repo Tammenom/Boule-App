@@ -54,6 +54,15 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
 
     public boolean startListening = false;
     public boolean endListening = false;
+    public void endGameRound(View v){
+        gameController.endGameRound();
+
+    }
+
+    public void finishActivity(){
+        finish();
+    }
+
     public void throwANewBall(View v){
 
         if(!startListening && !endListening){

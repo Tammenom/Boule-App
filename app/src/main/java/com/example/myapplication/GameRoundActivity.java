@@ -2,37 +2,50 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
+import com.example.myapplication.Models.VolumeKeyListener;
 
 import java.util.ArrayList;
 
-public class PlayRoundActivity extends AppCompatActivity implements SensorEventListener{
-    private  SensorManager mSensorManager;
-    public   Sensor mAccelerometer;
+public class GameRoundActivity extends AppCompatActivity implements SensorEventListener {
+    private SensorManager mSensorManager;
+    public Sensor mAccelerometer;
     public ArrayList<float []> throwVectors = new ArrayList<float []>();
     public GameController gameController;
+    public VolumeKeyListener keyListener = new VolumeKeyListener(this);
+    float xprev=0;
+    float yprev=0;
+    float zprev=0;
+    boolean checkForXpos = false;
+    boolean timeStamoCheck = false;
 
+    private long firstTimeStamp = 0;
+    private long secondTimeStamp = 0;
+
+    public boolean startListening = false;
+    public boolean endListening = false;
 
     BouleFieldView bouleView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_round);
-         bouleView = (BouleFieldView) findViewById(R.id.bouleFieldView);
+        setContentView(R.layout.activity_game_round);
+        bouleView = (BouleFieldView) findViewById(R.id.bouleFieldView);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         gameController = GameController.getInstance();
@@ -49,50 +62,46 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
         super.onPause();
         mSensorManager.unregisterListener(this);
     }
-    private long firstTimeStamp = 0;
-    private long secondTimeStamp = 0;
 
-    public boolean startListening = false;
-    public boolean endListening = false;
     public void endGameRound(View v){
-        gameController.endGameRound();
+        gameController.EndGameRound();
 
     }
 
+    //Method is called trough the "End Game" Button, finishes the current GameRound Activity.
     public void finishActivity(){
         finish();
     }
 
-    public void throwANewBall(View v){
-
-        if(!startListening && !endListening){
-             long firstTimeStamp = 0;
-             long secondTimeStamp = 0;
-            startListening = true;
-            onResume();
-
-        } else if(startListening && !endListening){
-
-            endListening = true;
+    //Listens for, if the Volume Keys are pressed. If Volume Keys are Pressed, the Acceleration Sensor starts/continues collecting Data.
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            Log.d("KeyListener", "Volume Key Pressed");
+            if(!startListening && !endListening){
+                startListening = true;
+                onResume();}
         }
+        return true;
     }
 
-    float xprev=0;
-    float yprev=0;
-    float zprev=0;
+    //Listens for, if the Volume Keys are released. If Volume Key are released, the Acceleration Sensor stops collecting Data.
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
+            Log.d("KeyListener", "Volume Key Released");
+            if(startListening && !endListening){
+                endListening = true;}
+        }
+        return true;
+    }
 
-    boolean xPositiv = false;
-    boolean yPositiv = false;
-    boolean checkForXpos = false;
-    boolean timeStamoCheck = false;
-
+    //Collects the Acceleration Data and saves it in the "ArrayList<float []> throwVectors".
+    //After Data Collection is finished, the Array-List is passed trough the GameController to the GameModule.
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
         float[] values = sensorEvent.values;
-
-        //if(startListening && !endListening&& count <100) {}
-
 
         if(startListening && !endListening&& throwVectors.size() <200){
             if(!timeStamoCheck){
@@ -100,62 +109,46 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
                 timeStamoCheck = true;
             }
 
-            //Log.d("Sensor-App", "x:" + values[0] + " y:" + values[1] + " z:" + values[2]);
             if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
                 float [] throwVec = new float[3];
                 throwVec[0] = values[0] -xprev;
                 throwVec[1] = values[1] -yprev;
                 throwVec[2] = values[2] -zprev;
-                //Log.d("Sensor-App", "x:" + throwVec[0] + " y:" + throwVec[1] + " z:" + throwVec[2]);
                 throwVectors.add(throwVec);
             }
 
-
-
-        }else             if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
+        }else if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
             float [] throwVec = new float[3];
             throwVec[0] = values[0] -xprev;
             throwVec[1] = values[1] -yprev;
             throwVec[2] = values[2] -zprev;
-            //Log.d("Sensor-App", "x:" + throwVec[0] + " y:" + throwVec[1] + " z:" + throwVec[2]);
             throwVectors.add(throwVec);
         }
 
         if(startListening && endListening){
             secondTimeStamp = sensorEvent.timestamp;
-
-            float xv = 0;
-            float yv = 0;
-            float zv = 0;
             checkForXpos = false;
-
             ThrowData throwData = new ThrowData(firstTimeStamp, secondTimeStamp, throwVectors);
-
             gameController.ThrowButtonClicked(throwData);
-            //bouleView.ThrowButtonClicked(xv,yv, zv, throwTime);
-
             timeStamoCheck = false;
             startListening = false;
             endListening = false;
             throwVectors.clear();
             onPause();
         }
-
-
-
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 
+    //Calls the Update Method in the BouleFieldView.
     public void UpdateBouleFieldView(BallData nBallDatas){
         bouleView.UpdateBouleFieldView(nBallDatas);
     }
 
-
-    public void  SetPlayroundTeamPointsView(String teamName, String listContent){
+    //Sets the TextView for the teams scores, to the String that is passed into the function.
+    public void SetGameRoundTeamPointsView(String teamName, String listContent){
         if(teamName == "Team 1"){
             ((TextView)findViewById(R.id.Team1Points)).setText(listContent);
         }
@@ -164,6 +157,7 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
         }
     }
 
+    //Sets the TextView for for the teams remaining boules (balls) to the String that is passed into the function.
     public void  SetTeamBoulesLeftView(String teamName, String listContent){
         if(teamName == "Team 1"){
             ((TextView)findViewById(R.id.Team1BoulesLeft)).setText(listContent);
@@ -173,8 +167,8 @@ public class PlayRoundActivity extends AppCompatActivity implements SensorEventL
         }
     }
 
+    //Sets the TextView for the current game state of the game round. (First Round, Current Player turn, End Round, ect.)
     public void SetPlayerTurnView(String textPlayerTurn){
         ((TextView)findViewById(R.id.TurnView)).setText(textPlayerTurn);
-
     }
 }

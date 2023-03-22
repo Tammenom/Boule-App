@@ -1,7 +1,5 @@
 package com.example.myapplication.DataClasses;
 
-import com.example.myapplication.Models.GameModel;
-
 import java.util.ArrayList;
 
 public class GameData {

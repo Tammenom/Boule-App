@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
-import com.example.myapplication.DataClasses.GameData;
 import com.example.myapplication.DataClasses.PlayRoundData;
 import com.example.myapplication.DataClasses.ThrowData;
 
@@ -13,16 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameModel {
+public class GameModule {
 
-    private static GameModel OBJ;
-    private  GameModel() {
+    private static GameModule OBJ;
+    private GameModule() {
         System.out.println("Objekt gebildet GameModel");
     }
 
-    public static GameModel getInstance() {
+    public static GameModule getInstance() {
         if (OBJ == null){
-            OBJ = new GameModel();
+            OBJ = new GameModule();
         }
 
         return OBJ;
@@ -92,10 +91,7 @@ public class GameModel {
                 break;
         }
         SetPlayerLists(numPlayers);
-
         SetGameOverviewTeamsList();
-
-
     }
 
     public void ResetGameSettings(){
@@ -179,7 +175,7 @@ public class GameModel {
         if (gameRoundData.gameHasEnded)
             finishedGameRounds.add(gameRoundData);
 
-        gameController.finishGameRoundActivity();
+        gameController.FinishGameRoundActivity();
         UpdateCurrentGame();
     }
 

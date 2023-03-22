@@ -8,16 +8,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.Nullable;
-
 import com.example.myapplication.DataClasses.BallData;
-import com.example.myapplication.DataClasses.GameData;
-import com.example.myapplication.DataClasses.PlayRoundData;
-
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 public class BouleFieldView extends View {
     public BouleFieldView(Context context) {

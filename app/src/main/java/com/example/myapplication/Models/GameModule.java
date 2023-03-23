@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
+import com.example.myapplication.DataClasses.GameData;
 import com.example.myapplication.DataClasses.PlayRoundData;
 import com.example.myapplication.DataClasses.ThrowData;
 
@@ -26,6 +27,8 @@ public class GameModule {
 
         return OBJ;
     }
+
+    private GameData gameData;
 
     private GameController gameController = GameController.getInstance();
 
@@ -49,7 +52,6 @@ public class GameModule {
     List<Integer> roundsList;
     List<Integer> team1RoundPoints;
     List<Integer> team2RoundPoints;
-
     public ArrayList<PlayRoundData> finishedGameRounds = new ArrayList<PlayRoundData>();
     public ArrayList<String> teamOnePlayers = new ArrayList<String>();
     public ArrayList<String> teamTwoPlayers = new ArrayList<String>();
@@ -67,9 +69,6 @@ public class GameModule {
         SetGameSettingsToGameMode(newGameMode);
         Log.d("App", "InitializeGame in GameModel");
         UpdateCurrentGame();
-
-
-
     }
 
     public void SetGameSettingsToGameMode(String gMode){
@@ -95,6 +94,7 @@ public class GameModule {
     }
 
     public void ResetGameSettings(){
+
         roundCount =0;
         team1Points = 0;
         team2Points = 0;

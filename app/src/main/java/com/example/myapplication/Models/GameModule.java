@@ -29,32 +29,18 @@ public class GameModule {
     }
 
     private GameData gameData;
+    private GameSettingsModule gameSettings;
+    private GameBallModule ballManager;
+    private GameRoundModule gameRoundManager;
 
     private GameController gameController = GameController.getInstance();
 
 
-    //Numer of Players in current Game
-    private int numPlayers = 0;
-
-    //Count of Rounds in current Game
-    private int roundCount = 0;
-
-    //Game Points of both Teams in current Game
-    private int team1Points = 0;
-    private int team2Points = 0;
-
-    //Size of the depicted Game Field in current Game
-    private int fieldSizeX;
-    private int fieldSizeY;
-
-    private int maxBoulesPerTeam = 3;
 
     List<Integer> roundsList;
     List<Integer> team1RoundPoints;
     List<Integer> team2RoundPoints;
-    public ArrayList<PlayRoundData> finishedGameRounds = new ArrayList<PlayRoundData>();
-    public ArrayList<String> teamOnePlayers = new ArrayList<String>();
-    public ArrayList<String> teamTwoPlayers = new ArrayList<String>();
+
 
     //Boule Field View
     public PlayRoundData gameRoundData = new PlayRoundData();
@@ -65,134 +51,32 @@ public class GameModule {
 
     //Initializes the game withe the selected amount of Players
     public void InitializeGame(String newGameMode){
-        ResetGameSettings();
-        SetGameSettingsToGameMode(newGameMode);
+        gameData = GameData.getInstance();
+        gameSettings = new GameSettingsModule();
+        gameRoundManager = new GameRoundModule();
+        gameSettings.ResetGameSettings();
+        gameSettings.SetGameSettingsToGameMode(newGameMode);
         Log.d("App", "InitializeGame in GameModel");
         UpdateCurrentGame();
     }
 
-    public void SetGameSettingsToGameMode(String gMode){
-        String gameMode = gMode;
 
-        switch(gMode){
-
-            case "1 vs.1":
-                numPlayers= 1;
-                break;
-            case "2 vs.2":
-                numPlayers= 3;
-                break;
-            case "3 vs.3":
-                numPlayers= 5;
-                break;
-            default:
-                Log.e("GameInfo","Game Mode Error");
-                break;
-        }
-        SetPlayerLists(numPlayers);
-        SetGameOverviewTeamsList();
-    }
-
-    public void ResetGameSettings(){
-
-        roundCount =0;
-        team1Points = 0;
-        team2Points = 0;
-        roundsList = new ArrayList<>();
-        team1RoundPoints = new ArrayList<>();
-        team2RoundPoints = new ArrayList<>();
-
-
-    }
-
-    public void SetPlayerLists(int numPlayers){
-        boolean team1 = true;
-
-        for (int i =0; i<= numPlayers; i++){
-            if (team1){
-                teamOnePlayers.add( "Player "+ String.valueOf(i+1));
-                team1 = false;
-
-            }else{
-                teamTwoPlayers.add( "Player "+ String.valueOf(i+1));
-                team1 = true;
-            }
-        }
-    }
-
+    //Sets the Members of both Teams.
     public void SetGameOverviewTeamsList(){
 
         String team1Content = "";
         String team2Content = "";
 
 
-        for (int i =0; i< teamOnePlayers.size(); i++){
-                team1Content = team1Content + teamOnePlayers.get(i) + "\n";
+        for (int i =0; i< gameData.teamOnePlayers.size(); i++){
+                team1Content = team1Content + gameData.teamOnePlayers.get(i) + "\n";
             }
-        for (int i =0; i< teamTwoPlayers.size(); i++){
-            team2Content = team2Content + teamTwoPlayers.get(i) + "\n";
+        for (int i =0; i< gameData.teamTwoPlayers.size(); i++){
+            team2Content = team2Content + gameData.teamTwoPlayers.get(i) + "\n";
         }
 
         gameController.SetGameOverviewTeamPlayerList("Team 1", team1Content);
         gameController.SetGameOverviewTeamPlayerList("Team 2", team2Content);
-
-    }
-
-    public void NextGameRound(){
-        gameRoundData = new PlayRoundData();
-
-        switch(numPlayers){
-
-            case 1:
-                gameRoundData.boulesTeamOne = 3;
-                gameRoundData.boulesTeamTwo = 3;
-                gameRoundData.maxPlayers = 2;
-                break;
-            case 3:
-                gameRoundData.maxPlayers = 4;
-            case 5:
-                gameRoundData.maxPlayers = 6;
-                gameRoundData.boulesTeamOne = 6;
-                gameRoundData.boulesTeamTwo = 6;
-                break;
-            default:
-                Log.e("GameInfo","Set Boules per Team Error");
-                break;
-    }
-    gameRoundData.playerTeams.add("neutral");
-        for(int i =0; i < teamOnePlayers.size(); i++){
-            gameRoundData.playerTeams.add("team 1");
-
-            if (teamOnePlayers.get(i) != null){
-                gameRoundData.playerTeams.add("team 2");
-            }
-        }
-
-        UpdatePlayerTurnView();
-    }
-
-    public void endGameRound(){
-        if (gameRoundData.gameHasEnded)
-            finishedGameRounds.add(gameRoundData);
-
-        gameController.FinishGameRoundActivity();
-        UpdateCurrentGame();
-    }
-
-
-
-    public void NewThrow(ThrowData nThrowData ){
-        Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
-        if(!gameRoundData.gameHasEnded){
-            CalculateVelocity( nThrowData);
-            UpdatePlayroundPoints();
-            CalculateBoulsLeft();
-            CheckIfPlayroundHasEnded();
-            UpdateCurentPlayer();
-            UpdateTeamBoulesLeftView();
-            UpdatePlayroundTeamPointsView();
-            UpdatePlayerTurnView();
-        }
 
     }
 
@@ -219,21 +103,54 @@ public class GameModule {
 
     }
 
-    public void UpdateCurrentGame(){
+    //<-------------------------------->
+
+    public void NextGameRound(){
+        gameRoundManager.NextGameRound();
+        UpdatePlayerTurnView();
+    }
+
+    public void endGameRound(){
+        gameRoundManager.endGameRound();
+        gameController.FinishGameRoundActivity();
+        UpdateCurrentGame();
+    }
 
 
-        UpdateGameSettings();
-        SetGameOverviewRounds();
-        SetGameOverviewPlayerPoints();
 
+
+
+
+
+    public void NewThrow(ThrowData nThrowData ){
+        Log.d("Sensor-App", "Current Player: " + gameRoundData.currentPlayer);
+        if(!gameRoundData.gameHasEnded){
+            CalculateVelocity( nThrowData);
+            gameSettings.UpdatePlayroundPoints();
+            CalculateBoulsLeft();
+            CheckIfPlayroundHasEnded();
+            UpdateCurentPlayer();
+            UpdateTeamBoulesLeftView();
+            UpdatePlayroundTeamPointsView();
+            UpdatePlayerTurnView();
+        }
 
     }
 
+
+
+    public void UpdateCurrentGame(){
+        gameSettings.UpdateGameData();
+        SetGameOverviewTeamsList();
+        SetGameOverviewRounds();
+        SetGameOverviewPlayerPoints();
+    }
+
     public void SetGameOverviewRounds(){
-        String roundsTotal = Integer.toString(roundCount);
+        String roundsTotal = Integer.toString(gameData.roundCount);
         String roundsListView = "";
-        for(int i = 0; i < finishedGameRounds.size(); i++){
-            roundsListView += Integer.toString(roundsList.get(i))+"\n";
+        for(int i = 0; i < gameData.finishedGameRounds.size(); i++){
+            roundsListView += Integer.toString(gameData.roundsList.get(i))+"\n";
         }
 
         gameController.SetGameOverviewTotalRoundCount(roundsTotal);
@@ -246,7 +163,7 @@ public class GameModule {
         String team1RoundPointsList = "";
         String team2RoundPointsList = "";
 
-        for(int i = 0; i < team1RoundPoints.size(); i++){
+        for(int i = 0; i < gameData.team1RoundPoints.size(); i++){
             team1TotalPoints += team1RoundPoints.get(i);
             team1RoundPointsList += Integer.toString(team1RoundPoints.get(i))+"\n";
         }
@@ -262,21 +179,7 @@ public class GameModule {
 
     }
 
-    public  void UpdateGameSettings(){
-        roundCount =0;
-        team1Points =0;
-        team2Points =0;
-        team1RoundPoints.clear();
-        team2RoundPoints.clear();
-        for (int i =0; i< finishedGameRounds.size(); i++){
-            roundsList.add(i +1);
-            team1RoundPoints.add(finishedGameRounds.get(i).pointsTeamOne);
-            team2RoundPoints.add(finishedGameRounds.get(i).pointsTeamTwo);
-            team1Points += finishedGameRounds.get(i).pointsTeamOne;
-            team2Points += finishedGameRounds.get(i).pointsTeamTwo;
-        }
-        roundCount = (finishedGameRounds.size());
-    }
+
 
 
 
@@ -330,39 +233,7 @@ public class GameModule {
 
     }
 
-    public void UpdatePlayroundPoints(){
-        if (gameRoundData.thrownBallsSorted != null && gameRoundData.thrownBallsSorted.size() >= 1){
-            String firstBouleTeam = gameRoundData.thrownBallsSorted.get(0).ballTeam;
-            int totalPoints = 0;
-            for (int i =0; i< gameRoundData.thrownBallsSorted.size(); i++){
-                if ((gameRoundData.thrownBallsSorted.get(i).ballTeam == firstBouleTeam) && totalPoints <4){
-                    totalPoints++;
-                }else{
-                    i = gameRoundData.thrownBallsSorted.size();
-                }
-            }
-            switch(firstBouleTeam){
-                case "neutral":
 
-                    break;
-                case "team 1":
-                    gameRoundData.pointsTeamOne = totalPoints;
-                    gameRoundData.pointsTeamTwo = 0;
-                    Log.d("Sensor-App", "Points Team 1: " + gameRoundData.pointsTeamOne);
-                    Log.d("Sensor-App", "Points Team 2: " + gameRoundData.pointsTeamTwo);
-                    break;
-                case "team 2":
-                    gameRoundData.pointsTeamTwo = totalPoints;
-                    gameRoundData.pointsTeamOne = 0;
-                    Log.d("Sensor-App", "Points Team 1: " + gameRoundData.pointsTeamOne);
-                    Log.d("Sensor-App", "Points Team 2: " + gameRoundData.pointsTeamTwo);
-                    break;
-                default:
-
-                    break;
-            }
-        }
-    }
 
 
 

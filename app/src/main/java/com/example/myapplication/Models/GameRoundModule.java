@@ -20,6 +20,8 @@ public class GameRoundModule {
                 break;
             case 4:
                 gameData.gameRoundData.maxPlayers = 4;
+                gameData.gameRoundData.boulesTeamOne = 6;
+                gameData.gameRoundData.boulesTeamTwo = 6;
             case 6:
                 gameData.gameRoundData.maxPlayers = 6;
                 gameData.gameRoundData.boulesTeamOne = 6;

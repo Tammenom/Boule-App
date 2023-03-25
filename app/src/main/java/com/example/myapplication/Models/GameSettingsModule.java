@@ -28,6 +28,7 @@ public class GameSettingsModule {
 
                 break;
         }
+        gameData.numPlayers = numPlayers;
         SetPlayerLists(numPlayers);
     }
 
@@ -45,6 +46,7 @@ public class GameSettingsModule {
             }
         }
     }
+
     public void UpdateGameData(){
         gameData.roundCount =0;
         gameData.team1Points =0;
@@ -52,7 +54,6 @@ public class GameSettingsModule {
         gameData.team1RoundPoints.clear();
         gameData.team2RoundPoints.clear();
         for (int i =0; i< gameData.finishedGameRounds.size(); i++){
-            gameData.roundsList.add(i +1);
             gameData.team1RoundPoints.add(gameData.finishedGameRounds.get(i).pointsTeamOne);
             gameData.team2RoundPoints.add(gameData.finishedGameRounds.get(i).pointsTeamTwo);
             gameData.team1Points += gameData.finishedGameRounds.get(i).pointsTeamOne;
@@ -79,14 +80,10 @@ public class GameSettingsModule {
                 case "team 1":
                     gameData.gameRoundData.pointsTeamOne = totalPoints;
                     gameData.gameRoundData.pointsTeamTwo = 0;
-                    Log.d("Sensor-App", "Points Team 1: " + gameData.gameRoundData.pointsTeamOne);
-                    Log.d("Sensor-App", "Points Team 2: " + gameData.gameRoundData.pointsTeamTwo);
                     break;
                 case "team 2":
                     gameData.gameRoundData.pointsTeamTwo = totalPoints;
                     gameData.gameRoundData.pointsTeamOne = 0;
-                    Log.d("Sensor-App", "Points Team 1: " + gameData.gameRoundData.pointsTeamOne);
-                    Log.d("Sensor-App", "Points Team 2: " + gameData.gameRoundData.pointsTeamTwo);
                     break;
                 default:
 
@@ -99,7 +96,6 @@ public class GameSettingsModule {
         gameData.roundCount =0;
         gameData.team1Points = 0;
         gameData.team2Points = 0;
-        gameData.roundsList = new ArrayList<>();
         gameData.team1RoundPoints = new ArrayList<>();
         gameData.team2RoundPoints = new ArrayList<>();
     }

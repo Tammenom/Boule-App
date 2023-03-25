@@ -30,14 +30,15 @@
             android:layout_marginTop="25px"
             android:layout_marginBottom="15px"
             android:layout_weight="0"
-            android:text="Teams"
+            android:background="#FAF7F7"
+            android:text="PLAYERS"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="77dp"
             android:layout_weight="1"
             android:gravity="center|top"
             android:orientation="horizontal">
@@ -53,18 +54,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="#FA3F3F"
                     android:text="Team 1"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textColor="#FFFEFE"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/Team1PlayerList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FF7979"
                     android:textAlignment="center"
+                    android:textColor="#FAF6F6"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
 
@@ -78,18 +83,22 @@
                     android:id="@+id/Team2Heading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#2C58DD"
                     android:text="Team 2"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textColor="#FDFCFC"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/Team2PlayerList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#6B89E4"
                     android:textAlignment="center"
+                    android:textColor="#FDFBFB"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
         </LinearLayout>
@@ -102,12 +111,12 @@
             android:text="Points per round"
             android:textAlignment="center"
             android:textAllCaps="true"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_weight="3"
             android:gravity="center|top"
             android:orientation="horizontal">
@@ -131,7 +140,9 @@
                     android:id="@+id/Team1PointsListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#C8C8C8"
                     android:textAlignment="center"
+                    android:textColor="#FAFAFA"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -155,7 +166,9 @@
                     android:id="@+id/RoundCountListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#9E9D9D"
                     android:textAlignment="center"
+                    android:textColor="#FDFCFC"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -178,7 +191,9 @@
                     android:id="@+id/Team2PointsListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#C8C8C8"
                     android:textAlignment="center"
+                    android:textColor="#F8F7F7"
                     android:textSize="16sp" />
 
             </LinearLayout>
@@ -192,12 +207,12 @@
             android:layout_weight="0"
             android:text="SUMMARY"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="14dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -209,9 +224,9 @@
 
                 <TextView
                     android:id="@+id/Team1PointsTotalHeading"
-                    android:text="Team 1\nPoints"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Team 1\nPoints"
                     android:textAlignment="center"
                     android:textStyle="bold" />
 
@@ -231,9 +246,9 @@
 
                 <TextView
                     android:id="@+id/RoundsTotalHeading"
-                    android:text="Rounds\n(Total)"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Rounds\n(Total)"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -276,7 +291,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="NextRoundButtonClicked"
-            android:text="Next Round" />
+            android:text="TEAM 1 WON THE GAME " />
 
     </LinearLayout>
 

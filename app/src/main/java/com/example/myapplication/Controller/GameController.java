@@ -1,7 +1,5 @@
 package com.example.myapplication.Controller;
 
-import android.util.Log;
-
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
 import com.example.myapplication.GameOverviewActivity;
@@ -43,22 +41,23 @@ public class GameController {
     public void SetGameOverviewRoundCountList( String listContent){gameOverviewActivity.SetGameOverviewRoundCountList(listContent);}
     public void SetGameOverviewTeamTotalPoints(String teamName, String content){gameOverviewActivity.SetGameOverviewTeamTotalPoints(teamName,content);}
     public void SetGameOverviewTeamListPoints(String teamName, String listContent){gameOverviewActivity.SetGameOverviewTeamListPoints(teamName,listContent);}
-    public void NextRound(){gameModule.NextGameRound();}
-    public void ThrowButtonClicked(ThrowData nThrowData){
-        gameModule.NewThrow(nThrowData);
-    }
+
     public void UpdateBouleFieldView(BallData nBallDatas){gameRoundActivity.UpdateBouleFieldView(nBallDatas);}
     public void SetPlayroundTeamPointsView(String teamName, String listContent){gameRoundActivity.SetGameRoundTeamPointsView(teamName, listContent);}
     public void SetTeamBoulesLeftView(String teamName, String listContent){gameRoundActivity.SetTeamBoulesLeftView(teamName,listContent);}
     public void SetPlayerTurnView(String textPlayerTurn){gameRoundActivity.SetPlayerTurnView(textPlayerTurn);}
-    public void EndGameRound(){
-        gameModule.endGameRound();
-    }
+
     public void FinishGameRoundActivity(){
         gameRoundActivity.finishActivity();
     }
 
-
+    public void NextRound(){gameModule.NextGameRound();}
+    public void EndGameRound(){
+        gameModule.endGameRound();
+    }
+    public void ThrowButtonClicked(ThrowData nThrowData){
+        gameModule.ThrowButtonClicked(nThrowData);
+    }
 
 
 }

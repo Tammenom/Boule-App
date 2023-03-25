@@ -24,13 +24,6 @@
                 android:onClick="endGameRound"
                 android:text="End Round" />
 
-            <Button
-                android:id="@+id/throwNewBall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="throwANewBall"
-                android:text="Throw New Ball" />
         </LinearLayout>
 
         <LinearLayout

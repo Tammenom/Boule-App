@@ -17,7 +17,10 @@ public class GameData {
         return OBJ;
     }
 
-    public List<Integer> roundsList;
+
+    public int roundCount = 0;
+
+
     public List<Integer> team1RoundPoints;
     public List<Integer> team2RoundPoints;
     public ArrayList<PlayRoundData> finishedGameRounds = new ArrayList<PlayRoundData>();
@@ -30,7 +33,7 @@ public class GameData {
     public int numPlayers = 0;
 
     //Count of Rounds in current Game
-    public int roundCount = 0;
+
 
     //Game Points of both Teams in current Game
     public int team1Points = 0;
@@ -46,11 +49,11 @@ public class GameData {
 
     //Boule Field View
     public PlayRoundData gameRoundData = new PlayRoundData();
-    public int gRound = 0;
+
     public  float [] ballInfo = new float[5];
     public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
     public boolean teamOneTurn = true;
-    public int halloWorld = 42;
+
 
 }
 

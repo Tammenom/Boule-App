@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.myapplication.Controller.GameController;
@@ -77,6 +78,11 @@ public class GameOverviewActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.Team2PointsListView)).setText(listContent);
         }
     }
+    public void SetNextButtonText(String nText){
+        ((Button) findViewById(R.id.nextRoundButton)).setText(nText);
+    }
+
+    public void ExitGameButtonClicked(View v){finish();}
 
     //Is executed when "Next Round Button" is clicked, calls the LaunchNewGameRound function.
     public void NextRoundButtonClicked(View v){

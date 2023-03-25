@@ -46,10 +46,15 @@ public class GameController {
     public void SetPlayroundTeamPointsView(String teamName, String listContent){gameRoundActivity.SetGameRoundTeamPointsView(teamName, listContent);}
     public void SetTeamBoulesLeftView(String teamName, String listContent){gameRoundActivity.SetTeamBoulesLeftView(teamName,listContent);}
     public void SetPlayerTurnView(String textPlayerTurn){gameRoundActivity.SetPlayerTurnView(textPlayerTurn);}
+    public void SetNextRoundButtonText(String textGameWon)
+    {
+        gameOverviewActivity.SetNextButtonText(textGameWon);
+    }
 
     public void FinishGameRoundActivity(){
         gameRoundActivity.finishActivity();
     }
+    public void ExitGameOverview(){ gameModule.ExitGameOverview();}
 
     public void NextRound(){gameModule.NextGameRound();}
     public void EndGameRound(){

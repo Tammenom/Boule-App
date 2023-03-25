@@ -2,7 +2,9 @@ package com.example.myapplication.Models;
 
 import android.util.Log;
 
+import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.GameData;
+import com.example.myapplication.DataClasses.PlayRoundData;
 
 import java.util.ArrayList;
 
@@ -96,8 +98,16 @@ public class GameSettingsModule {
         gameData.roundCount =0;
         gameData.team1Points = 0;
         gameData.team2Points = 0;
-        gameData.team1RoundPoints = new ArrayList<>();
-        gameData.team2RoundPoints = new ArrayList<>();
+        gameData.team1RoundPoints.clear();
+        gameData.team2RoundPoints.clear();
+        gameData.numPlayers = 0;
+        gameData.gameRounds.clear();
+        gameData.ballInfo = new float[5];
+        gameData.ballDatas.clear();
+        gameData.teamOnePlayers.clear();
+        gameData.teamTwoPlayers.clear();
+        gameData.finishedGameRounds.clear();
+
     }
 
 }

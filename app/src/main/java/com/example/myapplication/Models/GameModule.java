@@ -6,12 +6,7 @@ import android.view.View;
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.GameData;
-import com.example.myapplication.DataClasses.PlayRoundData;
 import com.example.myapplication.DataClasses.ThrowData;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class GameModule {
 
@@ -42,18 +37,24 @@ public class GameModule {
         ballManager = new GameBallModule();
         gameSettings.ResetGameSettings();
         gameSettings.SetGameSettingsToGameMode(newGameMode);
-        Log.d("App", "InitializeGame in GameModel");
         UpdateCurrentGame();
     }
 
     public void UpdateCurrentGame(){
         gameSettings.UpdateGameData();
+        if(CheckIfGameHasEnded()){
+            SetNextButtonTextToGameWon();
+        }
         SetGameOverviewTeamsList();
         SetGameOverviewRounds();
         SetGameOverviewPlayerPoints();
     }
 
     public void NextGameRound(){
+        if(CheckIfGameHasEnded()){
+            gameSettings.ResetGameSettings();
+            SetNextButtonTextToDefault();
+        }
         gameRoundManager.NextGameRound();
         UpdatePlayerTurnView();
         UpdateTeamBoulesLeftView();
@@ -65,8 +66,11 @@ public class GameModule {
         UpdateCurrentGame();
     }
 
+    public void ExitGameOverview(){
+        gameSettings.ResetGameSettings();
+    }
+
     public void ThrowButtonClicked(ThrowData nThrowData ){
-        Log.d("Sensor-App", "Current Player: " + gameData.gameRoundData.currentPlayer);
         if(!gameData.gameRoundData.gameHasEnded){
             ballManager.CalculateVelocity( nThrowData);
             gameSettings.UpdatePlayroundPoints();
@@ -78,6 +82,29 @@ public class GameModule {
             UpdatePlayerTurnView();
         }
 
+    }
+
+    public void SetNextButtonTextToGameWon(){
+        if(gameData.team1Points >= gameData.pointsToWin){
+            gameController.SetNextRoundButtonText("TEAM 1 HAS WON THE GAME!\nClick to start a new game.");
+        }
+        if(gameData.team2Points >= gameData.pointsToWin){
+            gameController.SetNextRoundButtonText("TEAM 2 HAS WON THE GAME!\nClick to start a new game.");
+        }
+    }
+
+    public void SetNextButtonTextToDefault(){
+        {
+            gameController.SetNextRoundButtonText("CLICK TO START A NEW ROUND.");
+        }
+    }
+
+    public boolean CheckIfGameHasEnded(){
+        if (gameData.team1Points >= gameData.pointsToWin || gameData.team2Points >= gameData.pointsToWin){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 

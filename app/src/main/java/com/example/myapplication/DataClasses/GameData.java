@@ -20,14 +20,14 @@ public class GameData {
 
     public int roundCount = 0;
 
-
-    public List<Integer> team1RoundPoints;
-    public List<Integer> team2RoundPoints;
+    public int pointsToWin = 13;
+    public ArrayList<Integer> team1RoundPoints = new ArrayList<Integer>();
+    public ArrayList<Integer> team2RoundPoints = new ArrayList<Integer>();
     public ArrayList<PlayRoundData> finishedGameRounds = new ArrayList<PlayRoundData>();
     public ArrayList<String> teamOnePlayers = new ArrayList<String>();
     public ArrayList<String> teamTwoPlayers = new ArrayList<String>();
 
-    public String gameMode;
+    public String lastChoosenGameMode;
 
     //Numer of Players in current Game
     public int numPlayers = 0;

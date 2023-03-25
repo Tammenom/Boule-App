@@ -3,8 +3,6 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.hardware.Sensor;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
-import com.example.myapplication.Models.VolumeKeyListener;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,6 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     public Sensor mAccelerometer;
     public ArrayList<float []> throwVectors = new ArrayList<float []>();
     public GameController gameController;
-    public VolumeKeyListener keyListener = new VolumeKeyListener(this);
     float xprev=0;
     float yprev=0;
     float zprev=0;
@@ -77,7 +73,6 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-            Log.d("KeyListener", "Volume Key Pressed");
             if(!startListening && !endListening){
                 startListening = true;
                 onResume();}
@@ -89,7 +84,6 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
-            Log.d("KeyListener", "Volume Key Released");
             if(startListening && !endListening){
                 endListening = true;}
         }

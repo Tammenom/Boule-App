@@ -19,22 +19,22 @@ import java.util.ArrayList;
 
 public class GameRoundActivity extends AppCompatActivity implements SensorEventListener {
     private SensorManager mSensorManager;
-    public Sensor mAccelerometer;
-    public ArrayList<float []> throwVectors = new ArrayList<float []>();
-    public GameController gameController;
-    float xprev=0;
-    float yprev=0;
-    float zprev=0;
-    boolean checkForXpos = false;
-    boolean timeStamoCheck = false;
+    private Sensor mAccelerometer;
+    private ArrayList<float []> throwVectors = new ArrayList<float []>();
+    private GameController gameController;
+    private float xprev=0;
+    private float yprev=0;
+    private float zprev=0;
+    private boolean checkForXpos = false;
+    private boolean timeStamoCheck = false;
 
     private long firstTimeStamp = 0;
     private long secondTimeStamp = 0;
 
-    public boolean startListening = false;
-    public boolean endListening = false;
+    private boolean startListening = false;
+    private boolean endListening = false;
 
-    BouleFieldView bouleView;
+    private BouleFieldView bouleView;
 
 
     @Override

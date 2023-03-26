@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import androidx.annotation.Nullable;
 import com.example.myapplication.DataClasses.BallData;
@@ -46,7 +45,7 @@ public class BouleFieldView extends View {
     }
 
 
-    public void calculateVisualBallThrows(){
+    public void CalculateVisualBallThrows(){
         boolean drawNew = false;
 
         for(int i = 0; i < ballDatas.size(); i++){
@@ -102,6 +101,6 @@ public class BouleFieldView extends View {
 
         }
 
-        calculateVisualBallThrows();
+        CalculateVisualBallThrows();
     }
 }

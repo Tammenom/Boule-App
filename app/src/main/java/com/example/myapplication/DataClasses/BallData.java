@@ -13,7 +13,7 @@ public class BallData {
     //The Team, the Ball belongs to.
     public String ballTeam = "neutral";
 
-    public  float distanceToPiggy = 99999999;
+    public  float distanceToJack = 99999999;
 
     public BallData(float nBallVelX, float nBallVelY, String nTeam ){
 

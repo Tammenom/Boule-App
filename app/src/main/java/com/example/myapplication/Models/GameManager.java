@@ -1,6 +1,5 @@
 package com.example.myapplication.Models;
 
-import android.util.Log;
 import android.view.View;
 
 import com.example.myapplication.Controller.GameController;
@@ -8,40 +7,40 @@ import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.GameData;
 import com.example.myapplication.DataClasses.ThrowData;
 
-public class GameModule {
+public class GameManager {
 
-    private static GameModule OBJ;
-    private GameModule() {
+    private static GameManager OBJ;
+    private GameManager() {
         System.out.println("Objekt gebildet GameModel");
     }
 
-    public static GameModule getInstance() {
+    public static GameManager getInstance() {
         if (OBJ == null){
-            OBJ = new GameModule();
+            OBJ = new GameManager();
         }
 
         return OBJ;
     }
 
     private GameData gameData;
-    private GameSettingsModule gameSettings;
-    private GameBallModule ballManager;
-    private GameRoundModule gameRoundManager;
+    private SettingsManager settingsManager;
+    private GameLogic ballManager;
+    private GameRoundManager gameRoundManager;
     private GameController gameController = GameController.getInstance();
 
     //Initializes the game withe the selected amount of Players
     public void InitializeGame(String newGameMode){
         gameData = GameData.getInstance();
-        gameSettings = new GameSettingsModule();
-        gameRoundManager = new GameRoundModule();
-        ballManager = new GameBallModule();
-        gameSettings.ResetGameSettings();
-        gameSettings.SetGameSettingsToGameMode(newGameMode);
+        settingsManager = new SettingsManager();
+        gameRoundManager = new GameRoundManager();
+        ballManager = new GameLogic();
+        settingsManager.ResetGame();
+        settingsManager.SetGameSettingsToGameMode(newGameMode);
         UpdateCurrentGame();
     }
 
     public void UpdateCurrentGame(){
-        gameSettings.UpdateGameData();
+        settingsManager.UpdateGameData();
         if(CheckIfGameHasEnded()){
             SetNextButtonTextToGameWon();
         }
@@ -52,7 +51,7 @@ public class GameModule {
 
     public void NextGameRound(){
         if(CheckIfGameHasEnded()){
-            gameSettings.ResetGameSettings();
+            settingsManager.ResetGame();
             SetNextButtonTextToDefault();
         }
         gameRoundManager.NextGameRound();
@@ -60,35 +59,35 @@ public class GameModule {
         UpdateTeamBoulesLeftView();
     }
 
-    public void endGameRound(){
-        gameRoundManager.endGameRound();
+    public void EndGameRound(){
+        gameRoundManager.AddCurrentGameRoundToFinishedGameRounds();
         gameController.FinishGameRoundActivity();
         UpdateCurrentGame();
     }
 
     public void ExitGameOverview(){
-        gameSettings.ResetGameSettings();
+        settingsManager.ResetGame();
     }
 
-    public void ThrowButtonClicked(ThrowData nThrowData ){
-        if(!gameData.gameRoundData.gameHasEnded){
+    public void NewThrow(ThrowData nThrowData ){
+        if(!gameData.currentGameRound.gameHasEnded){
             ballManager.CalculateVelocity( nThrowData);
-            gameSettings.UpdatePlayroundPoints();
+            settingsManager.UpdateGameRoundScore();
             ballManager.CalculateBoulsLeft();
             ballManager.CheckIfPlayroundHasEnded();
             ballManager.UpdateCurentPlayer();
             UpdateTeamBoulesLeftView();
-            UpdatePlayroundTeamPointsView();
+            UpdateGameRoundTeamPointsView();
             UpdatePlayerTurnView();
         }
 
     }
 
     public void SetNextButtonTextToGameWon(){
-        if(gameData.team1Points >= gameData.pointsToWin){
+        if(gameData.team1TotalScore >= gameData.scoreToWin){
             gameController.SetNextRoundButtonText("TEAM 1 HAS WON THE GAME!\nClick to start a new game.");
         }
-        if(gameData.team2Points >= gameData.pointsToWin){
+        if(gameData.team2TotalScore >= gameData.scoreToWin){
             gameController.SetNextRoundButtonText("TEAM 2 HAS WON THE GAME!\nClick to start a new game.");
         }
     }
@@ -100,7 +99,7 @@ public class GameModule {
     }
 
     public boolean CheckIfGameHasEnded(){
-        if (gameData.team1Points >= gameData.pointsToWin || gameData.team2Points >= gameData.pointsToWin){
+        if (gameData.team1TotalScore >= gameData.scoreToWin || gameData.team2TotalScore >= gameData.scoreToWin){
             return true;
         }else{
             return false;
@@ -123,22 +122,22 @@ public class GameModule {
         gameController.SetGameOverviewTeamPlayerList("Team 2", team2Content);
     }
 
-    public void UpdatePlayroundTeamPointsView(){
-        gameController.SetPlayroundTeamPointsView("Team 1", gameData.gameRoundData.pointsTeamOne +" Points");
-        gameController.SetPlayroundTeamPointsView("Team 2", gameData.gameRoundData.pointsTeamTwo +" Points");
+    public void UpdateGameRoundTeamPointsView(){
+        gameController.SetPlayroundTeamPointsView("Team 1", gameData.currentGameRound.scoreTeamOne +" Points");
+        gameController.SetPlayroundTeamPointsView("Team 2", gameData.currentGameRound.scoreTeamTwo +" Points");
     }
 
     public void UpdateTeamBoulesLeftView(){
-        gameController.SetTeamBoulesLeftView("Team 1", gameData.gameRoundData.boulesTeamOne +" left.");
-        gameController.SetTeamBoulesLeftView("Team 2", gameData.gameRoundData.boulesTeamTwo +" left.");
+        gameController.SetTeamBoulesLeftView("Team 1", gameData.currentGameRound.boulesTeamOne +" left.");
+        gameController.SetTeamBoulesLeftView("Team 2", gameData.currentGameRound.boulesTeamTwo +" left.");
     }
 
     public void UpdatePlayerTurnView(){
-        if(!gameData.gameRoundData.gameHasEnded){
-            if (gameData.gameRoundData.currentPlayer == 0){
+        if(!gameData.currentGameRound.gameHasEnded){
+            if (gameData.currentGameRound.currentPlayer == 0){
                 gameController.SetPlayerTurnView("Throw the Jack!");
             }else{
-                gameController.SetPlayerTurnView("PLAYER " + gameData.gameRoundData.currentPlayer + " TURN.");
+                gameController.SetPlayerTurnView("PLAYER " + gameData.currentGameRound.currentPlayer + " TURN.");
             }
         }else{
             gameController.SetPlayerTurnView("GAME ROUND END");
@@ -165,13 +164,13 @@ public class GameModule {
         String team1RoundPointsList = "";
         String team2RoundPointsList = "";
 
-        for(int i = 0; i < gameData.team1RoundPoints.size(); i++){
-            team1TotalPoints += gameData.team1RoundPoints.get(i);
-            team1RoundPointsList += Integer.toString(gameData.team1RoundPoints.get(i))+"\n";
+        for(int i = 0; i < gameData.team1RoundScore.size(); i++){
+            team1TotalPoints += gameData.team1RoundScore.get(i);
+            team1RoundPointsList += Integer.toString(gameData.team1RoundScore.get(i))+"\n";
         }
-        for(int i = 0; i < gameData.team2RoundPoints.size(); i++){
-            team2TotalPoints += gameData.team2RoundPoints.get(i);
-            team2RoundPointsList += Integer.toString(gameData.team2RoundPoints.get(i))+"\n";
+        for(int i = 0; i < gameData.team2RoundScore.size(); i++){
+            team2TotalPoints += gameData.team2RoundScore.get(i);
+            team2RoundPointsList += Integer.toString(gameData.team2RoundScore.get(i))+"\n";
         }
         gameController.SetGameOverviewTeamTotalPoints("Team 1", Integer.toString(team1TotalPoints));
         gameController.SetGameOverviewTeamTotalPoints("Team 2", Integer.toString(team2TotalPoints));

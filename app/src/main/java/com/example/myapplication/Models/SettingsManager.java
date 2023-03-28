@@ -1,5 +1,7 @@
 package com.example.myapplication.Models;
 
+import android.util.Log;
+
 import com.example.myapplication.DataClasses.GameData;
 
 public class SettingsManager {
@@ -10,6 +12,8 @@ public class SettingsManager {
         gameData.fieldSizeX = sizeX;
         gameData.fieldSizeY = sizeY;
     }
+
+
 
     //Sets the "Number of Player" variable in GameData. Calls the "SetPlayerList" function.
     public void SetGameSettingsToGameMode(String gMode){
@@ -67,36 +71,7 @@ public class SettingsManager {
     }
 
 
-    //Reads the throws from the sorted ball throw lists and adds the score to the current Game Round Score.
-    public void UpdateGameRoundScore(){
-        if (gameData.currentGameRound.thrownBallsSorted != null && gameData.currentGameRound.thrownBallsSorted.size() >= 1){
-            String firstBouleTeam = gameData.currentGameRound.thrownBallsSorted.get(0).ballTeam;
-            int totalPoints = 0;
-            for (int i = 0; i< gameData.currentGameRound.thrownBallsSorted.size(); i++){
-                if ((gameData.currentGameRound.thrownBallsSorted.get(i).ballTeam == firstBouleTeam) && totalPoints <6){
-                    totalPoints++;
-                }else{
-                    i = gameData.currentGameRound.thrownBallsSorted.size();
-                }
-            }
-            switch(firstBouleTeam){
-                case "neutral":
 
-                    break;
-                case "team 1":
-                    gameData.currentGameRound.scoreTeamOne = totalPoints;
-                    gameData.currentGameRound.scoreTeamTwo = 0;
-                    break;
-                case "team 2":
-                    gameData.currentGameRound.scoreTeamTwo = totalPoints;
-                    gameData.currentGameRound.scoreTeamOne = 0;
-                    break;
-                default:
-
-                    break;
-            }
-        }
-    }
     //Resets the GameData
     public void ResetGame(){
         gameData.roundCount =0;

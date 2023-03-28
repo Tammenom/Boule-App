@@ -60,7 +60,6 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
 
     public void endGameRound(View v){
         gameController.EndGameRound();
-
     }
 
     //Method is called trough the "End Game" Button, finishes the current GameRound Activity.
@@ -125,8 +124,7 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) {}
 
     public void SendThrowEvent(ThrowData nThrowData){
         gameController.NewThrowEvent(nThrowData);

@@ -72,10 +72,10 @@ public class GameManager {
     public void NewThrow(ThrowData nThrowData ){
         if(!gameData.currentGameRound.gameHasEnded){
             gameLogic.ProcessNewThrow( nThrowData);
-            settingsManager.UpdateGameRoundScore();
-            gameLogic.CalculateBoulsLeft();
-            gameLogic.UpdateCurentPlayer();
-            gameLogic.CheckIfGameRoundHasEnded();
+            gameRoundManager.UpdateGameRoundScore();
+            gameRoundManager.CalculateBoulsLeft();
+            gameRoundManager.UpdateCurentPlayer();
+            gameRoundManager.CheckIfGameRoundHasEnded();
 
             UpdateTeamBoulesLeftView();
             UpdateGameRoundTeamPointsView();

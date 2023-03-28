@@ -48,9 +48,7 @@ public class GameController {
     public void NewThrowEvent(ThrowData nThrowData){
         gameManager.NewThrow(nThrowData);
     }
-    public void UpdateBouleFieldSize(float sizeX, float sizeY){
-        Log.d("App", "Received Field Size Data");
-    }
+    public void UpdateBouleFieldSize(float sizeX, float sizeY){gameManager.SetBouleFieldSize(sizeX,sizeY);}
 
 
 }

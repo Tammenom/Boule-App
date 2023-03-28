@@ -6,6 +6,11 @@ public class SettingsManager {
 
     private GameData gameData = GameData.getInstance();
 
+    public void SetBouleFieldSize(float sizeX, float sizeY){
+        gameData.fieldSizeX = sizeX;
+        gameData.fieldSizeY = sizeY;
+    }
+
     //Sets the "Number of Player" variable in GameData. Calls the "SetPlayerList" function.
     public void SetGameSettingsToGameMode(String gMode){
         String gameMode = gMode;

@@ -23,11 +23,12 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     private ArrayList<float []> throwVectors = new ArrayList<float []>();
     private GameController gameController;
     private float movementfilter = 0.8f;
+    private int maxLengthList = 300;
     private boolean checkForXpos = false;
-    private boolean timeStamoCheck = false;
+    private boolean timeStampCheck = false;
 
-    private long firstTimeStamp = 0;
-    private long secondTimeStamp = 0;
+    private long startTimeStamp = 0;
+    private long endTimeStamp = 0;
 
     private boolean startListening = false;
     private boolean endListening = false;
@@ -67,7 +68,7 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
         finish();
     }
 
-    //Listens for, if the Volume Keys are pressed. If Volume Keys are Pressed, the Acceleration Sensor starts/continues collecting Data.
+    //If Volume Keys are Pressed, the Acceleration Sensor starts/continues collecting Data.
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
@@ -78,7 +79,7 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
         return true;
     }
 
-    //Listens for, if the Volume Keys are released. If Volume Key are released, the Acceleration Sensor stops collecting Data.
+    // If Volume Key is released, the Acceleration Sensor stops collecting Data.
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP){
@@ -95,10 +96,10 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
 
         float[] values = sensorEvent.values;
 
-        if(startListening && !endListening&& throwVectors.size() <200){
-            if(!timeStamoCheck){
-                firstTimeStamp = sensorEvent.timestamp;
-                timeStamoCheck = true;
+        if(startListening && !endListening&& throwVectors.size() <maxLengthList){
+            if(!timeStampCheck){
+                startTimeStamp = sensorEvent.timestamp;
+                timeStampCheck = true;
             }
 
             if(values[0]>=movementfilter || values[0]<=-movementfilter || values[1]>=movementfilter || values[2]>=movementfilter || values[1]<=-movementfilter || values[2]<=-movementfilter){
@@ -108,21 +109,14 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
                 throwVec[2] = values[2] ;
                 throwVectors.add(throwVec);
             }
-
-        }else if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
-            float [] throwVec = new float[3];
-            throwVec[0] = values[0];
-            throwVec[1] = values[1];
-            throwVec[2] = values[2];
-            throwVectors.add(throwVec);
         }
 
         if(startListening && endListening){
-            secondTimeStamp = sensorEvent.timestamp;
+            endTimeStamp = sensorEvent.timestamp;
             checkForXpos = false;
-            ThrowData throwData = new ThrowData(firstTimeStamp, secondTimeStamp, throwVectors);
+            ThrowData throwData = new ThrowData(startTimeStamp, endTimeStamp, throwVectors);
             SendThrowEvent(throwData);
-            timeStamoCheck = false;
+            timeStampCheck = false;
             startListening = false;
             endListening = false;
             throwVectors.clear();

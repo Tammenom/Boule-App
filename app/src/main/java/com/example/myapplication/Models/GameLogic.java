@@ -136,15 +136,12 @@ public class GameLogic {
         switch(ntype){
             case 0:
                 velocity = nforce/ntime;
-                Log.d("App", "Velocity X: " + velocity);
                 break;
             case 1:
                 velocity = (nforce/ntime)*3;
-                Log.d("App", "Velocity Y: " + velocity);
                 break;
             case 2:
                 velocity = nforce/ntime;
-                Log.d("App", "Velocity Z: " + velocity);
                 break;
             default:
                 velocity = 0;
@@ -158,19 +155,25 @@ public class GameLogic {
         boolean drawNew = false;
 
         for(int i = 0; i < gameData.currentGameRound.thrownBalls.size(); i++){
-
+            float counterforce = 0.98f;
+            float minimalVelocity = 0.1f;
+            float bouleFieldSizeX = gameData.fieldSizeX;
+            float bouleFieldSizeY = gameData.fieldSizeY;
             BallData ballData = gameData.currentGameRound.thrownBalls.get(i);
 
-            if (ballData.ballVelX > 0.1 || ballData.ballVelY > 0.1){
+            if (ballData.ballPosX > -bouleFieldSizeX && ballData.ballPosX < bouleFieldSizeX && ballData.ballPosY > -bouleFieldSizeY){
+                if (ballData.ballVelX > minimalVelocity || ballData.ballVelY > minimalVelocity){
 
-                drawNew = true;
+                    drawNew = true;
 
-                ballData.ballVelX = ballData.ballVelX * 0.98f;
-                ballData.ballVelY = ballData.ballVelY * 0.98f;
-
-                ballData.ballPosX = ballData.ballPosX + ballData.ballVelX;
-                ballData.ballPosY = ballData.ballPosY - ballData.ballVelY;
-
+                    ballData.ballVelX = ballData.ballVelX * counterforce;
+                    ballData.ballVelY = ballData.ballVelY * counterforce;
+                    ballData.ballPosX = ballData.ballPosX + ballData.ballVelX;
+                    ballData.ballPosY = ballData.ballPosY - ballData.ballVelY;
+                }
+            }else{
+                ballData.ballVelX = 0;
+                ballData.ballVelY =0;
             }
         }
 

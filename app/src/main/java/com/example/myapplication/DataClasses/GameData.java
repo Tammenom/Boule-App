@@ -35,8 +35,8 @@ public class GameData {
     public GameRoundData currentGameRound = new GameRoundData();
 
     //Size of the depicted Game Field in current Game
-    public int fieldSizeX;
-    public int fieldSizeY;
+    public float fieldSizeX = 0;
+    public float fieldSizeY = 0;
     //Boule Field View
 
 

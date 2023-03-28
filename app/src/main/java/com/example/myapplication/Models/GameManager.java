@@ -145,6 +145,10 @@ public class GameManager {
         }
     }
 
+    public void SetBouleFieldSize(float sizeX, float sizeY){
+        settingsManager.SetBouleFieldSize(sizeX,sizeY);
+    }
+
     public void UpdateBouleFieldView(BallData nBallData){
         gameController.SetBouleFieldView(nBallData);
     }

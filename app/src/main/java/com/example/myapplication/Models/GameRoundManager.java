@@ -33,12 +33,12 @@ public class GameRoundManager {
                 Log.e("GameInfo","Set Boules per Team Error");
                 break;
         }
-        gameData.currentGameRound.playerTeams.add("neutral");
+        gameData.currentGameRound.playerNames.add("neutral");
         for(int i =0; i < gameData.teamOnePlayers.size(); i++){
-            gameData.currentGameRound.playerTeams.add("team 1");
+            gameData.currentGameRound.playerNames.add("team 1");
 
             if (gameData.teamOnePlayers.get(i) != null){
-                gameData.currentGameRound.playerTeams.add("team 2");
+                gameData.currentGameRound.playerNames.add("team 2");
             }
         }
 

@@ -8,11 +8,21 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
+
+import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
 import java.util.ArrayList;
 
 
 public class BouleFieldView extends View {
+    private float minimalVelocity = 0.1f;
+    public float counterforce = 0.98f;
+    public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
+    private GameController gameController = GameController.getInstance();
+    private boolean fieldSizeInitizialized = false;
+    private int bouleFieldSizeX = 0;
+    private int bouleFieldSizeY = 0;
+
     public BouleFieldView(Context context) {
         super(context);
         init(null);
@@ -37,11 +47,21 @@ public class BouleFieldView extends View {
 
     }
 
-    public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
+
 
     public void UpdateBouleFieldView(BallData nBallData){
         ballDatas.add(nBallData);
         postInvalidate();
+    }
+
+    private void UpdateBouleFieldSize(Canvas canvas){
+        bouleFieldSizeX = canvas.getWidth()/2;
+        bouleFieldSizeY = canvas.getHeight();
+
+        if (!fieldSizeInitizialized){
+            gameController.UpdateBouleFieldSize(canvas.getWidth()/2, canvas.getHeight());
+            fieldSizeInitizialized = true;
+        }
     }
 
 
@@ -52,16 +72,19 @@ public class BouleFieldView extends View {
 
             BallData ballData = ballDatas.get(i);
 
-            if (ballData.ballVelX > 0.1 || ballData.ballVelY > 0.1){
+            if (ballData.ballPosX > -bouleFieldSizeX && ballData.ballPosX < bouleFieldSizeX && ballData.ballPosY > -bouleFieldSizeY){
+                if (ballData.ballVelX > minimalVelocity || ballData.ballVelY > minimalVelocity){
 
-                drawNew = true;
+                    drawNew = true;
 
-                ballData.ballVelX = ballData.ballVelX * 0.98f;
-                ballData.ballVelY = ballData.ballVelY * 0.98f;
-
-                ballData.ballPosX = ballData.ballPosX + ballData.ballVelX;
-                ballData.ballPosY = ballData.ballPosY - ballData.ballVelY;
-
+                    ballData.ballVelX = ballData.ballVelX * counterforce;
+                    ballData.ballVelY = ballData.ballVelY * counterforce;
+                    ballData.ballPosX = ballData.ballPosX + ballData.ballVelX;
+                    ballData.ballPosY = ballData.ballPosY - ballData.ballVelY;
+                }
+            }else{
+                ballData.ballVelX = 0;
+                ballData.ballVelY =0;
             }
         }
 
@@ -72,10 +95,11 @@ public class BouleFieldView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        UpdateBouleFieldSize(canvas);
         float startPosX = canvas.getWidth() /2;
         float startPosY = canvas.getHeight();
         canvas.drawColor(getResources().getColor(R.color.lightBeige));
-        //canvas.drawColor(Color.argb(1,234, 210, 168));
+
         Paint paint = new Paint();
 
         for (int i =0; i < ballDatas.size(); i++){

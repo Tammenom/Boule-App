@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class ThrowData {
 
-    public float timeStampOne = 0;
-    public float timeStampTwo = 0;
+    public float timeStampStart = 0;
+    public float timeStampEnd = 0;
     public ArrayList<float []> throwVectors = new ArrayList<float []>();
 
-    public ThrowData(float nTimeStampOne, float nTimeStampTwo, ArrayList<float []> nThrowVectors ){
+    public ThrowData(float nTimeStampStart, float nTimeStampEnd, ArrayList<float []> nThrowVectors ){
 
-        timeStampOne = nTimeStampOne;
-        timeStampTwo = nTimeStampTwo;
+        timeStampStart = nTimeStampStart;
+        timeStampEnd = nTimeStampEnd;
         throwVectors = nThrowVectors;
         
     }

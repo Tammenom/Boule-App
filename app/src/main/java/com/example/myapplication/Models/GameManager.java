@@ -24,7 +24,7 @@ public class GameManager {
 
     private GameData gameData;
     private SettingsManager settingsManager;
-    private GameLogic ballManager;
+    private GameLogic gameLogic;
     private GameRoundManager gameRoundManager;
     private GameController gameController = GameController.getInstance();
 
@@ -33,7 +33,7 @@ public class GameManager {
         gameData = GameData.getInstance();
         settingsManager = new SettingsManager();
         gameRoundManager = new GameRoundManager();
-        ballManager = new GameLogic();
+        gameLogic = new GameLogic();
         settingsManager.ResetGame();
         settingsManager.SetGameSettingsToGameMode(newGameMode);
         UpdateCurrentGame();
@@ -71,11 +71,12 @@ public class GameManager {
 
     public void NewThrow(ThrowData nThrowData ){
         if(!gameData.currentGameRound.gameHasEnded){
-            ballManager.CalculateVelocity( nThrowData);
+            gameLogic.ProcessNewThrow( nThrowData);
             settingsManager.UpdateGameRoundScore();
-            ballManager.CalculateBoulsLeft();
-            ballManager.CheckIfPlayroundHasEnded();
-            ballManager.UpdateCurentPlayer();
+            gameLogic.CalculateBoulsLeft();
+            gameLogic.UpdateCurentPlayer();
+            gameLogic.CheckIfGameRoundHasEnded();
+
             UpdateTeamBoulesLeftView();
             UpdateGameRoundTeamPointsView();
             UpdatePlayerTurnView();
@@ -123,8 +124,8 @@ public class GameManager {
     }
 
     public void UpdateGameRoundTeamPointsView(){
-        gameController.SetPlayroundTeamPointsView("Team 1", gameData.currentGameRound.scoreTeamOne +" Points");
-        gameController.SetPlayroundTeamPointsView("Team 2", gameData.currentGameRound.scoreTeamTwo +" Points");
+        gameController.SetGameRoundTeamPointsView("Team 1", gameData.currentGameRound.scoreTeamOne +" Points");
+        gameController.SetGameRoundTeamPointsView("Team 2", gameData.currentGameRound.scoreTeamTwo +" Points");
     }
 
     public void UpdateTeamBoulesLeftView(){
@@ -145,7 +146,7 @@ public class GameManager {
     }
 
     public void UpdateBouleFieldView(BallData nBallData){
-        gameController.UpdateBouleFieldView(nBallData);
+        gameController.SetBouleFieldView(nBallData);
     }
 
     public void SetGameOverviewRounds(){

@@ -22,9 +22,7 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
     private Sensor mAccelerometer;
     private ArrayList<float []> throwVectors = new ArrayList<float []>();
     private GameController gameController;
-    private float xprev=0;
-    private float yprev=0;
-    private float zprev=0;
+    private float movementfilter = 0.8f;
     private boolean checkForXpos = false;
     private boolean timeStamoCheck = false;
 
@@ -103,19 +101,19 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
                 timeStamoCheck = true;
             }
 
-            if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
+            if(values[0]>=movementfilter || values[0]<=-movementfilter || values[1]>=movementfilter || values[2]>=movementfilter || values[1]<=-movementfilter || values[2]<=-movementfilter){
                 float [] throwVec = new float[3];
-                throwVec[0] = values[0] -xprev;
-                throwVec[1] = values[1] -yprev;
-                throwVec[2] = values[2] -zprev;
+                throwVec[0] = values[0];
+                throwVec[1] = values[1];
+                throwVec[2] = values[2] ;
                 throwVectors.add(throwVec);
             }
 
         }else if(values[0]>=0.8 || values[0]<=-0.8 || values[1]>=0.8 || values[2]>=0.8 || values[1]<=-0.8 || values[2]<=-0.8){
             float [] throwVec = new float[3];
-            throwVec[0] = values[0] -xprev;
-            throwVec[1] = values[1] -yprev;
-            throwVec[2] = values[2] -zprev;
+            throwVec[0] = values[0];
+            throwVec[1] = values[1];
+            throwVec[2] = values[2];
             throwVectors.add(throwVec);
         }
 
@@ -123,7 +121,7 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
             secondTimeStamp = sensorEvent.timestamp;
             checkForXpos = false;
             ThrowData throwData = new ThrowData(firstTimeStamp, secondTimeStamp, throwVectors);
-            gameController.ThrowButtonClicked(throwData);
+            SendThrowEvent(throwData);
             timeStamoCheck = false;
             startListening = false;
             endListening = false;
@@ -134,6 +132,10 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    public void SendThrowEvent(ThrowData nThrowData){
+        gameController.NewThrowEvent(nThrowData);
     }
 
     //Calls the Update Method in the BouleFieldView.

@@ -49,17 +49,17 @@ public class GameOverviewActivity extends AppCompatActivity {
         }
     }
 
-    //Sets the TextView for the Members of the two Teams, to the String that is passed to the function.
+    //Sets the TextView for the Members of the two Teams, to the String that is passed into the function.
     public void SetGameOverviewTotalRoundCount(String content){
         ((TextView)findViewById(R.id.TotalRoundCountView)).setText(content);
     }
 
-    //Sets the TextView for the overall Count of played Game Rounds, to the String that is passed to the function.
+    //Sets the TextView for the overall Count of played Game Rounds, to the String that is passed into the function.
     public void SetGameOverviewRoundCountList(String content){
         ((TextView)findViewById(R.id.RoundCountListView)).setText(content);
     }
 
-    //Sets the TextView for the Members of the two Teams, to the String that is passed to the function.
+    //Sets the TextView for the Members of the two Teams, to the String that is passed into the function.
     public void SetGameOverviewTeamTotalPoints(String teamName, String content){
         if(teamName == "Team 1"){
             ((TextView)findViewById(R.id.Team1TotalPointsView)).setText(content);

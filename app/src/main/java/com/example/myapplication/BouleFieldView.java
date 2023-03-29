@@ -20,8 +20,8 @@ public class BouleFieldView extends View {
     public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
     private GameController gameController = GameController.getInstance();
     private boolean fieldSizeInitizialized = false;
-    private int bouleFieldSizeX = 0;
-    private int bouleFieldSizeY = 0;
+    private float bouleFieldSizeX = 0;
+    private float bouleFieldSizeY = 0;
 
     public BouleFieldView(Context context) {
         super(context);

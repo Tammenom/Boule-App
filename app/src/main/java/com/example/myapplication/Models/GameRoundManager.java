@@ -9,21 +9,38 @@ public class GameRoundManager {
 
     private GameData gameData = GameData.getInstance();
 
-    public void UpdateCurentPlayer(){
 
+    public void UpdateCurentPlayer(){
         if (gameData.currentGameRound.currentPlayer < gameData.currentGameRound.playerNames.size() -1){
             gameData.currentGameRound.currentPlayer ++;
         }else{
             gameData.currentGameRound.currentPlayer = 1;
         }
     }
-
+//Checks if there are any boules left to throw in the current game round. If false, sets the "gameHasEnded" var to true;
     public void CheckIfGameRoundHasEnded(){
         if(gameData.currentGameRound.boulesTeamOne <=0 && gameData.currentGameRound.boulesTeamTwo <=0 ){
-            Log.d("Sensor-App", "Play Round has ended!");
             gameData.currentGameRound.gameHasEnded = true;
         }
-
+    }
+    //Calculates the new amound of Boules left, after a throw-event.
+    public void CalculateBoulsLeft(){
+        switch(CheckForCurrentTeam()){
+            case "neutral":
+                break;
+            case "team 1":
+                gameData.currentGameRound.boulesTeamOne --;
+                break;
+            case "team 2":
+                gameData.currentGameRound.boulesTeamTwo --;
+                break;
+            default:
+                break;
+        }
+    }
+    //Returns the team of the player whose turn it is.
+    public String CheckForCurrentTeam(){
+        return gameData.currentGameRound.playerNames.get(gameData.currentGameRound.currentPlayer);
     }
 
     //Reads the throws from the sorted ball throw lists and adds the score to the current Game Round Score.
@@ -51,35 +68,12 @@ public class GameRoundManager {
                     gameData.currentGameRound.scoreTeamOne = 0;
                     break;
                 default:
-
                     break;
             }
         }
     }
 
-    public void CalculateBoulsLeft(){
 
-        switch(CheckForCurrentTeam()){
-            case "neutral":
-
-                break;
-            case "team 1":
-                gameData.currentGameRound.boulesTeamOne --;
-                Log.d("Sensor-App", "Boules left Team 1: " + gameData.currentGameRound.boulesTeamOne);
-                break;
-            case "team 2":
-                gameData.currentGameRound.boulesTeamTwo --;
-                Log.d("Sensor-App", "Boules left Team 2: " + gameData.currentGameRound.boulesTeamTwo);
-                break;
-            default:
-
-                break;
-        }
-
-    }
-    public String CheckForCurrentTeam(){
-        return gameData.currentGameRound.playerNames.get(gameData.currentGameRound.currentPlayer);
-    }
 
     //Sets the Settings for the current Game Round (Boules per Team and Team-Members).
     public void NextGameRound(){

@@ -76,14 +76,12 @@ public class GameManager {
             gameRoundManager.CalculateBoulsLeft();
             gameRoundManager.UpdateCurentPlayer();
             gameRoundManager.CheckIfGameRoundHasEnded();
-
             UpdateTeamBoulesLeftView();
             UpdateGameRoundTeamPointsView();
             UpdatePlayerTurnView();
         }
-
     }
-
+    //If Game has ended, update the "Next Throw"-Button text to show who has won the game.
     public void SetNextButtonTextToGameWon(){
         if(gameData.team1TotalScore >= gameData.scoreToWin){
             gameController.SetNextRoundButtonText("TEAM 1 HAS WON THE GAME!\nClick to start a new game.");
@@ -92,7 +90,7 @@ public class GameManager {
             gameController.SetNextRoundButtonText("TEAM 2 HAS WON THE GAME!\nClick to start a new game.");
         }
     }
-
+    //Update the "Next Throw"-Button text to default.
     public void SetNextButtonTextToDefault(){
         {
             gameController.SetNextRoundButtonText("CLICK TO START A NEW ROUND.");

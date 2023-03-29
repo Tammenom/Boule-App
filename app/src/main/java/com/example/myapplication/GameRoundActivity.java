@@ -101,7 +101,8 @@ public class GameRoundActivity extends AppCompatActivity implements SensorEventL
                 timeStampCheck = true;
             }
 
-            if(values[0]>=movementfilter || values[0]<=-movementfilter || values[1]>=movementfilter || values[2]>=movementfilter || values[1]<=-movementfilter || values[2]<=-movementfilter){
+            if(values[0]>=movementfilter || values[0]<=-movementfilter || values[1]>=movementfilter
+                    || values[2]>=movementfilter || values[1]<=-movementfilter || values[2]<=-movementfilter){
                 float [] throwVec = new float[3];
                 throwVec[0] = values[0];
                 throwVec[1] = values[1];

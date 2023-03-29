@@ -54,12 +54,10 @@ public class GameLogic {
             if(throwVectors.get(i)[2] > 0)
                 zv = (zv + throwVectors.get(i)[2]);
         }
-
         float throwTime =  Math.round((secondTimeStamp - firstTimeStamp) / 100000000.0); //in Millisec
         AddNewBall(xv,yv,zv,throwTime);
     }
 
-    //Boule Field View
 
     public void AddNewBall(float nVelX, float nVelY, float nVelZ, float nTime){
         String newTeamInfo = CheckForCurrentTeam();
@@ -106,11 +104,10 @@ public class GameLogic {
             float bouleFieldSizeY = gameData.fieldSizeY;
             BallData ballData = gameData.currentGameRound.thrownBalls.get(i);
 
-            if (ballData.ballPosX > -bouleFieldSizeX && ballData.ballPosX < bouleFieldSizeX && ballData.ballPosY > -bouleFieldSizeY){
+            if (ballData.ballPosX > -bouleFieldSizeX && ballData.ballPosX < bouleFieldSizeX &&
+                    ballData.ballPosY > -bouleFieldSizeY){
                 if (ballData.ballVelX > minimalVelocity || ballData.ballVelY > minimalVelocity){
-
                     drawNew = true;
-
                     ballData.ballVelX = ballData.ballVelX * counterforce;
                     ballData.ballVelY = ballData.ballVelY * counterforce;
                     ballData.ballPosX = ballData.ballPosX + ballData.ballVelX;
@@ -130,7 +127,8 @@ public class GameLogic {
             for(int i = 1; i < gameData.currentGameRound.thrownBalls.size(); i++){
 
                 gameData.currentGameRound.thrownBalls.get(i).distanceToJack =
-                        CalculateDistanceToJack(gameData.currentGameRound.thrownBalls.get(0), gameData.currentGameRound.thrownBalls.get(i));
+                        CalculateDistanceToJack(gameData.currentGameRound.thrownBalls.get(0),
+                                gameData.currentGameRound.thrownBalls.get(i));
                 thrownBalls.add(gameData.currentGameRound.thrownBalls.get(i));
             }
             UpdateSortedList(InsertSortBallThrows(thrownBalls));

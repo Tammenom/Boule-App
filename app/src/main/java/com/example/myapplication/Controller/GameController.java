@@ -40,7 +40,6 @@ public class GameController {
     public void FinishGameRoundActivity(){
         gameRoundActivity.finishActivity();
     }
-    public void ExitGameOverview(){ gameManager.ExitGameOverview();}
     public void NextRound(){gameManager.NextGameRound();}
     public void EndGameRound(){
         gameManager.EndGameRound();

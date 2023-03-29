@@ -1,12 +1,10 @@
 package com.example.myapplication.Controller;
 
-import android.util.Log;
-
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
-import com.example.myapplication.GameOverviewActivity;
+import com.example.myapplication.Views.GameOverviewActivity;
 import com.example.myapplication.Models.GameManager;
-import com.example.myapplication.GameRoundActivity;
+import com.example.myapplication.Views.GameRoundActivity;
 
 public class GameController {
     private static GameController OBJ;

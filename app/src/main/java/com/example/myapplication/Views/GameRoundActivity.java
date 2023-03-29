@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
 import com.example.myapplication.DataClasses.ThrowData;
+import com.example.myapplication.R;
 
 import java.util.ArrayList;
 

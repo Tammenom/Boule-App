@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".GameRoundActivity">
+    tools:context=".Views.GameRoundActivity">
 
     <LinearLayout
         android:layout_width="411dp"
@@ -172,7 +172,7 @@
             android:textSize="34sp"
             android:textStyle="bold" />
 
-        <com.example.myapplication.BouleFieldView
+        <com.example.myapplication.Views.BouleFieldView
             android:id="@+id/bouleFieldView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

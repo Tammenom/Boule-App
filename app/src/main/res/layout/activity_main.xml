@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.MainActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="312dp"
@@ -64,7 +64,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100px"
-            android:onClick="closeApp"
             android:text="Exit App" />
 
     </LinearLayout>

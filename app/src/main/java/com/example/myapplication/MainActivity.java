@@ -1,4 +1,4 @@
-package com.example.myapplication.Views;
+package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +23,5 @@ public class MainActivity extends AppCompatActivity {
         gameMode = (((Button)v).getText().toString());
         game.putExtra("GameMode", gameMode);
         startActivity(game);
-    }
-
-    public void closeApp(View v){
-        finish();
     }
 }

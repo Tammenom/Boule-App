@@ -1,4 +1,4 @@
-package com.example.myapplication.Views;
+package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.myapplication.Controller.GameController;
-import com.example.myapplication.R;
 
 public class GameOverviewActivity extends AppCompatActivity {
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Views.GameOverviewActivity">
+    tools:context=".GameOverviewActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -331,7 +331,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="NextRoundButtonClicked"
-            android:text="CLICK TO START A NEW ROUND" />
+            android:text="TEAM 1 WON THE GAME " />
 
     </LinearLayout>
 

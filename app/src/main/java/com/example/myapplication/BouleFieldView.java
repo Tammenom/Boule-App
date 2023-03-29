@@ -1,4 +1,4 @@
-package com.example.myapplication.Views;
+package com.example.myapplication;
 
 
 import android.content.Context;
@@ -11,8 +11,6 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.Controller.GameController;
 import com.example.myapplication.DataClasses.BallData;
-import com.example.myapplication.R;
-
 import java.util.ArrayList;
 
 

@@ -18,7 +18,7 @@ public class GameLogic {
         return gameData.currentGameRound.playerNames.get(gameData.currentGameRound.currentPlayer);
     }
     public void ProcessNewThrow(ThrowData nThrowData){
-        float SecondMovementFilter = 2f;
+        float SecondMovementFilter = 2.5f;
         float firstTimeStamp = nThrowData.timeStampStart;
         float secondTimeStamp = nThrowData.timeStampEnd;
         ArrayList<float []> throwVectors = nThrowData.throwVectors;
@@ -75,16 +75,16 @@ public class GameLogic {
 
     public float CalculateVelocity(float nforce, float ntime, int ntype){
         //is X if type = 0, Y if type is 1, Z if type is 2;
-        int forwardForceMultiplier = 3;
+        float sidewardsForceMultiplier = 0.8f;
         int type=ntype;
         float velocity = 0;
 
         switch(ntype){
             case 0:
-                velocity = nforce/ntime;
+                velocity = (nforce/ntime)*sidewardsForceMultiplier;
                 break;
             case 1:
-                velocity = (nforce/ntime)*forwardForceMultiplier;
+                velocity = (nforce/ntime);
                 break;
             case 2:
                 velocity = nforce/ntime;
@@ -100,7 +100,7 @@ public class GameLogic {
         boolean drawNew = false;
 
         for(int i = 0; i < gameData.currentGameRound.thrownBalls.size(); i++){
-            float counterforce = 0.98f;
+            float counterforce = 0.975f;
             float minimalVelocity = 0.1f;
             float bouleFieldSizeX = gameData.fieldSizeX;
             float bouleFieldSizeY = gameData.fieldSizeY;

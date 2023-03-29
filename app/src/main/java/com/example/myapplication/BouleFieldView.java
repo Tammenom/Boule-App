@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class BouleFieldView extends View {
     private float minimalVelocity = 0.1f;
-    public float counterforce = 0.98f;
+    public float counterforce = 0.975f;
     public  ArrayList<BallData> ballDatas = new ArrayList<BallData>();
     private GameController gameController = GameController.getInstance();
     private boolean fieldSizeInitizialized = false;

@@ -13,7 +13,6 @@ public class ThrowData {
         timeStampStart = nTimeStampStart;
         timeStampEnd = nTimeStampEnd;
         throwVectors = nThrowVectors;
-        
     }
 }
 

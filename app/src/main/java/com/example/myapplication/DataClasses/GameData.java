@@ -15,29 +15,33 @@ public class GameData {
         return OBJ;
     }
 
-    //Game Points of both Teams in current Game
+    //Score that is needed to win the game.
     public int scoreToWin = 13;
+    //Total score of both Teams in current Game.
     public int team1TotalScore = 0;
     public int team2TotalScore = 0;
+    //Lists containing the game-round-scores, for both Teams in current Game.
     public ArrayList<Integer> team1RoundScore = new ArrayList<Integer>();
     public ArrayList<Integer> team2RoundScore = new ArrayList<Integer>();
 
-
+    //Numer of Players in current Game
     public int numPlayers = 0;
+
+    //Lists containing the player names of both teams.
     public ArrayList<String> teamOnePlayers = new ArrayList<String>();
     public ArrayList<String> teamTwoPlayers = new ArrayList<String>();
-    public String lastChoosenGameMode;
-    //Numer of Players in current Game
 
     //Count of Rounds in current Game
     public int roundCount = 0;
+    //List containing all finished game-rounds in the current game.
     public ArrayList<GameRoundData> finishedGameRounds = new ArrayList<GameRoundData>();
+    //Containg all relevant data for current gameround.
     public GameRoundData currentGameRound = new GameRoundData();
 
     //Size of the depicted Game Field in current Game
     public float fieldSizeX = 0;
     public float fieldSizeY = 0;
-    //Boule Field View
+
 
 
 
